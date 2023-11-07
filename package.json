@@ -40,5 +40,9 @@
         "svelte-loader": "^3.1.9",
         "tailwindcss": "^3.3.5",
         "vite": "^4.5.0"
+    },
+    "dependencies": {
+        "@sveltejs/adapter-auto": "^2.1.1",
+        "@sveltejs/kit": "^1.27.3"
     }
 }
