@@ -5,7 +5,7 @@
     import '../index.css';
 </script>
 
-<main class="flex h-auto flex-col justify-between bg-svelte-50 md:h-screen">
+<main class="flex h-auto flex-col justify-between md:h-screen">
     <Header />
     <Container>
         <slot />
