@@ -6,21 +6,10 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Poppins', ...defaultTheme.fontFamily.sans]
+                sans: ['Inter', ...defaultTheme.fontFamily.sans]
             },
-            colors: {
-                svelte: {
-                    50: '#FFF5EC',
-                    100: '#FFE9D3',
-                    200: '#FFCEA5',
-                    300: '#FFAC6D',
-                    400: '#FF7D32',
-                    500: '#FF590A',
-                    600: '#FF3E00',
-                    700: '#CC2902',
-                    800: '#A1210B',
-                    900: '#821E0C'
-                }
+            animation: {
+                fadein: 'fadein 0.6s'
             }
         }
     },

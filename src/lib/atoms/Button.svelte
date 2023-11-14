@@ -21,15 +21,15 @@
     $: typeCoding =
         type === 'primary'
             ? 'bg-svelte-600 text-white hover:bg-svelte-700'
-            : 'border border-slate-600 text-slate-600 hover:bg-slate-200';
+            : 'border border-gray-100 bg-gray-100 hover:bg-lime-200';
 </script>
 
 <a
-    class={`inline-block rounded-lg py-3 text-lg font-semibold leading-6 ${xPadding} ${typeCoding}`}
+    class={`leading-2 inline-block rounded-sm  text-lg font-semibold ${xPadding} ${typeCoding}`}
     {href}
     target="_blank"
     rel="noreferrer">
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
         <slot />
     </div>
 </a>

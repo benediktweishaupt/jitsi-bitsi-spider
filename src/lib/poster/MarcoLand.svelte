@@ -2,12 +2,11 @@
     import {onMount} from 'svelte';
     import {lecturerData} from '../../data/lecturerData.js';
     import {arrayOfTags} from '../../data/arrayOfTags.js';
-    import {dataToStrings} from '../../utils/scripts.js';
-    import {wrapInRandomElement} from '../../utils/scripts.js';
+    import {dataToStrings, wrapInRandomElement} from '../../utils/scripts.js';
 
-    const MLString = dataToStrings(lecturerData);
+    const MLString = dataToStrings(lecturerData[0]);
 
-    let ms = 1000;
+    let ms = 1200;
     let counter = 0;
     let container;
     let element;

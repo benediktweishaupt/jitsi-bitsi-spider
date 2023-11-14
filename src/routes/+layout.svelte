@@ -5,10 +5,14 @@
     import '../index.css';
 </script>
 
-<main class="flex h-auto flex-col justify-between md:h-screen">
+<!-- can you write me a small navigation listing all routes in subfolders? -->
+
+<main class="flex h-screen flex-col justify-stretch divide-y divide-gray-400">
     <Header />
-    <Container>
-        <slot />
-    </Container>
+    <div class="flex grow overflow-hidden bg-gray-900 text-white">
+        <Container>
+            <slot />
+        </Container>
+    </div>
     <Footer />
 </main>
