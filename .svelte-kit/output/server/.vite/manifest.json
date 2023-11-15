@@ -1,0 +1,148 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "imports": [
+      "_internal.js"
+    ],
+    "isEntry": true,
+    "src": ".svelte-kit/generated/server/internal.js"
+  },
+  "_index.js": {
+    "file": "chunks/index.js"
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "_lecturerData.js": {
+    "file": "chunks/lecturerData.js"
+  },
+  "_scripts.js": {
+    "file": "chunks/scripts.js"
+  },
+  "_stores.js": {
+    "file": "chunks/stores.js",
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "imports": [
+      "_index.js",
+      "_stores.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/error.svelte"
+  },
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "imports": [
+      "_internal.js",
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js"
+  },
+  "src/lib/images/jutta-bauer/jutta-bauer-01.png": {
+    "file": "_app/immutable/assets/jutta-bauer-01.d269c459.png",
+    "src": "src/lib/images/jutta-bauer/jutta-bauer-01.png"
+  },
+  "src/routes/+layout.css": {
+    "file": "_app/immutable/assets/_layout.cf8f8f66.css",
+    "src": "src/routes/+layout.css"
+  },
+  "src/routes/+layout.svelte": {
+    "assets": [
+      "_app/immutable/assets/jutta-bauer-01.d269c459.png"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout.cf8f8f66.css"
+    ],
+    "file": "entries/pages/_layout.svelte.js",
+    "imports": [
+      "_index.js",
+      "_stores.js",
+      "_lecturerData.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/+layout.svelte"
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "imports": [
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/+page.svelte"
+  },
+  "src/routes/[slug]/+page.svelte": {
+    "file": "entries/pages/_slug_/_page.svelte.js",
+    "imports": [
+      "_index.js",
+      "_stores.js",
+      "_lecturerData.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/[slug]/+page.svelte"
+  },
+  "src/routes/jutta-bauer/+page.svelte": {
+    "file": "entries/pages/jutta-bauer/_page.svelte.js",
+    "imports": [
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/jutta-bauer/+page.svelte"
+  },
+  "src/routes/marco-land/+page.svelte": {
+    "file": "entries/pages/marco-land/_page.svelte.js",
+    "imports": [
+      "_index.js",
+      "_lecturerData.js",
+      "_scripts.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/marco-land/+page.svelte"
+  },
+  "src/routes/nontsikelelo-mutiti/+page.css": {
+    "file": "_app/immutable/assets/_page.43f7e417.css",
+    "src": "src/routes/nontsikelelo-mutiti/+page.css"
+  },
+  "src/routes/nontsikelelo-mutiti/+page.svelte": {
+    "css": [
+      "_app/immutable/assets/_page.43f7e417.css"
+    ],
+    "file": "entries/pages/nontsikelelo-mutiti/_page.svelte.js",
+    "imports": [
+      "_index.js",
+      "_scripts.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/nontsikelelo-mutiti/+page.svelte"
+  },
+  "src/routes/stefan-marx/+page.css": {
+    "file": "_app/immutable/assets/_page.2cdd381d.css",
+    "src": "src/routes/stefan-marx/+page.css"
+  },
+  "src/routes/stefan-marx/+page.svelte": {
+    "css": [
+      "_app/immutable/assets/_page.2cdd381d.css"
+    ],
+    "file": "entries/pages/stefan-marx/_page.svelte.js",
+    "imports": [
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/stefan-marx/+page.svelte"
+  },
+  "src/routes/studio-moniker/+page.svelte": {
+    "file": "entries/pages/studio-moniker/_page.svelte.js",
+    "imports": [
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/studio-moniker/+page.svelte"
+  }
+}
