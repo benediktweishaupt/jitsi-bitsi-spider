@@ -34,6 +34,12 @@ const Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 const index = "";
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  const prerender = true;
+  const trailingSlash = "always";
+  if ($$props.prerender === void 0 && $$bindings.prerender && prerender !== void 0)
+    $$bindings.prerender(prerender);
+  if ($$props.trailingSlash === void 0 && $$bindings.trailingSlash && trailingSlash !== void 0)
+    $$bindings.trailingSlash(trailingSlash);
   return `
 
 <main class="flex h-screen flex-col justify-stretch divide-y divide-gray-400">${validate_component(Header, "Header").$$render($$result, {}, {}, {})}

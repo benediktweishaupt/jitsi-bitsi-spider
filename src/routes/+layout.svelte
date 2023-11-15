@@ -1,4 +1,7 @@
 <script>
+    export const prerender = true;
+    export const trailingSlash = 'always';
+
     import Header from '$lib/components/organisms/Header.svelte';
     import Footer from '$lib/components/organisms/Footer.svelte';
     import '../index.css';
