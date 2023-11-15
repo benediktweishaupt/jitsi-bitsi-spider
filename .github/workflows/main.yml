@@ -1,31 +1,31 @@
-# on: push
-# name: 🚀 Deploy website on push
-# jobs:
-#   web-deploy:
-#     name: 🎉 Deploy
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: 🚚 Get latest code
-#         uses: actions/checkout@v2
+on: push
+name: 🚀 Deploy website on push
+jobs:
+    web-deploy:
+        name: 🎉 Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🚚 Get latest code
+              uses: actions/checkout@v2
 
-#       - name: Use Node.js 18
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: "18"
+            - name: Use Node.js 18
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '18'
 
-#       - name: 🔨 Build Project
-#         run: |
-#           npm install
-#           npm run generate
+            - name: 🔨 Build Project
+              run: |
+                  npm install
+                  npm run generate
 
-#       - name: rsync deployment
-#         uses: burnett01/rsync-deployments@5.2.1
-#         with:
-#           switches: -avzr --delete
-#           path: ./.output/public/
-#           remote_path: ${{ secrets.HOSTINGER_PATH_PROJECTS }}
-#           remote_host: ${{ secrets.HOSTINGER_SSH_HOST }}
-#           remote_port: ${{ secrets.HOSTINGER_SSH_PORT}}
-#           remote_user: ${{ secrets.HOSTINGER_USER }}
-#           remote_key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
-#           remote_key_pass: ${{ secrets.HOSTINGER_SSH_PASSWORD }}
+            - name: rsync deployment
+              uses: burnett01/rsync-deployments@5.2.1
+              with:
+                  switches: -avzr --delete
+                  path: ./.output/public/
+                  remote_path: /home/u720217577/domains/benediktweishaupt.de/public_html/jitsi-bitsi-spider
+                  remote_host: ${{ secrets.HOSTINGER_SSH_HOST }}
+                  remote_port: ${{ secrets.HOSTINGER_SSH_PORT}}
+                  remote_user: ${{ secrets.HOSTINGER_USER }}
+                  remote_key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+                  remote_key_pass: ${{ secrets.HOSTINGER_SSH_PASSWORD }}
