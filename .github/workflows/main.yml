@@ -16,7 +16,7 @@ jobs:
             - name: 🔨 Build Project
               run: |
                   npm install
-                  npm run generate
+                  npm run build
 
             - name: rsync deployment
               uses: burnett01/rsync-deployments@5.2.1
