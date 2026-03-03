@@ -4,7 +4,7 @@ import { animateSequence } from '../../utilities/animation';
 import { PALETTES } from '../../utilities/color-palettes';
 import './word-reveal.css';
 
-const WORD_DELAY = 600;
+const DEFAULT_REVEAL_INTERVAL = 600;
 
 function getWords(speaker: PosterContext['speaker']): string[] {
   const text = speaker.bio?.de?.text || speaker.bio?.en?.text || speaker.caption.de || speaker.caption.en;
@@ -50,13 +50,14 @@ export const createWordReveal = definePoster({
 
   animate({ container, speaker, config }: PosterContext, manager) {
     const speed = config.speed ?? 1;
+    const revealInterval = config.intervals?.reveal ?? DEFAULT_REVEAL_INTERVAL;
     const textEl = container.querySelector('.word-reveal__text') as HTMLElement;
     const imageEl = container.querySelector('.word-reveal__image') as HTMLElement;
     const words = getWords(speaker);
 
     animateSequence(
       words,
-      WORD_DELAY / speed,
+      revealInterval / speed,
       (word, _index, progress) => {
         const span = document.createElement('span');
         span.style.color = PALETTES.redTint();

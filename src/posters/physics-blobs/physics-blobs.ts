@@ -3,7 +3,20 @@ import { definePoster } from '../../utilities/poster-scaffold';
 import { Blob, randomVec2, vec2, scale } from '../../utilities/physics';
 import './physics-blobs.css';
 
-const NUM_BLOBS = 12;
+const DEFAULT_BLOB_COUNT = 12;
+const DEFAULT_RADIUS_RANGE: [number, number] = [60, 120];
+
+function createBlobs(count: number, radiusRange: [number, number], w: number, h: number, moving: boolean): Blob[] {
+  const minDim = Math.min(w, h);
+  const blobs: Blob[] = [];
+  for (let i = 0; i < count; i++) {
+    const radius = (Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0]) * (minDim / 800);
+    const pos = randomVec2(w, h);
+    const vel = moving ? scale(vec2(Math.random() - 0.5, Math.random() - 0.5), 6) : vec2(0, 0);
+    blobs.push(new Blob(radius, pos, vel));
+  }
+  return blobs;
+}
 
 export const createPhysicsBlobs = definePoster({
   name: 'physics-blobs',
@@ -25,7 +38,7 @@ export const createPhysicsBlobs = definePoster({
     container.appendChild(canvas);
   },
 
-  staticFallback({ container }: PosterContext) {
+  staticFallback({ container, config }: PosterContext) {
     const canvas = container.querySelector('.physics-blobs__canvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -33,21 +46,16 @@ export const createPhysicsBlobs = definePoster({
     canvas.width = container.clientWidth || 800;
     canvas.height = container.clientHeight || 800;
 
-    const minDim = Math.min(canvas.width, canvas.height);
-    const blobs: Blob[] = [];
-    for (let i = 0; i < NUM_BLOBS; i++) {
-      const radius = (Math.random() * 60 + 60) * (minDim / 800);
-      const pos = randomVec2(canvas.width, canvas.height);
-      const vel = scale(vec2(0, 0), 0);
-      blobs.push(new Blob(radius, pos, vel));
-    }
+    const count = config.counts?.blobs ?? DEFAULT_BLOB_COUNT;
+    const radiusRange = config.ranges?.blobRadius ?? DEFAULT_RADIUS_RANGE;
+    const blobs = createBlobs(count, radiusRange, canvas.width, canvas.height, false);
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     blobs.forEach((b) => b.draw(ctx));
   },
 
-  animate({ container }: PosterContext, manager) {
+  animate({ container, config }: PosterContext, manager) {
     const canvas = container.querySelector('.physics-blobs__canvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -61,14 +69,9 @@ export const createPhysicsBlobs = definePoster({
     const observer = new ResizeObserver(resize);
     observer.observe(container);
 
-    const minDim = Math.min(canvas.width, canvas.height);
-    const blobs: Blob[] = [];
-    for (let i = 0; i < NUM_BLOBS; i++) {
-      const radius = (Math.random() * 60 + 60) * (minDim / 800);
-      const pos = randomVec2(canvas.width, canvas.height);
-      const vel = scale(vec2(Math.random() - 0.5, Math.random() - 0.5), 6);
-      blobs.push(new Blob(radius, pos, vel));
-    }
+    const count = config.counts?.blobs ?? DEFAULT_BLOB_COUNT;
+    const radiusRange = config.ranges?.blobRadius ?? DEFAULT_RADIUS_RANGE;
+    const blobs = createBlobs(count, radiusRange, canvas.width, canvas.height, true);
 
     const stopLoop = manager.startAnimationLoop(() => {
       ctx.fillStyle = 'black';

@@ -1,4 +1,3 @@
-import type { PosterConfig } from '../../types/speaker';
 import type { PosterContext } from '../../utilities/poster-scaffold';
 import { definePoster } from '../../utilities/poster-scaffold';
 import { getRandomInt, getRandomItem } from '../../utilities/random';
@@ -6,12 +5,8 @@ import { changeFontSize } from '../../utilities/style-mutations';
 import { PALETTES } from '../../utilities/color-palettes';
 import './letter-scatter.css';
 
-export interface LetterScatterConfig extends PosterConfig {
-  blurBackground?: boolean;
-  colorBurn?: boolean;
-}
-
-const SCATTER_INTERVAL = 1361;
+const DEFAULT_SCATTER_INTERVAL = 1361;
+const DEFAULT_BG_COLOR_INTERVAL = 8000;
 
 function getNameChars(speaker: PosterContext['speaker']): string[] {
   return speaker.name.replace(/\s/g, '').split('');
@@ -21,7 +16,6 @@ export const createLetterScatter = definePoster({
   name: 'letter-scatter',
 
   build({ container, speaker, config }: PosterContext) {
-    const scatterConfig = config as LetterScatterConfig;
     container.style.position = 'relative';
 
     const canvas = document.createElement('div');
@@ -30,7 +24,7 @@ export const createLetterScatter = definePoster({
 
     const bg = document.createElement('div');
     bg.classList.add('letter-scatter__background');
-    if (scatterConfig.blurBackground) {
+    if (config.blurBackground) {
       bg.classList.add('letter-scatter__background--blur');
     }
     container.appendChild(bg);
@@ -45,7 +39,7 @@ export const createLetterScatter = definePoster({
       nameChars.forEach((char, i) => {
         const el = document.createElement('div');
         el.classList.add('letter-scatter__letter');
-        if (scatterConfig.colorBurn) {
+        if (config.colorBurn) {
           el.classList.add('letter-scatter__letter--color-burn');
         }
         el.id = `${layer === canvas ? 'fg' : 'bg'}-letter-${i}`;
@@ -72,7 +66,10 @@ export const createLetterScatter = definePoster({
 
   animate({ container, speaker, config }: PosterContext, manager) {
     const speed = config.speed ?? 1;
+    const scatterInterval = config.intervals?.scatter ?? DEFAULT_SCATTER_INTERVAL;
+    const bgColorInterval = config.intervals?.bgColor ?? DEFAULT_BG_COLOR_INTERVAL;
     const colors = config.colors ?? [...PALETTES.primary];
+    const [fontMin, fontMax] = config.ranges?.fontSize ?? [10, 40];
     const canvas = container.querySelector('.letter-scatter__canvas') as HTMLElement;
     const bg = container.querySelector('.letter-scatter__background') as HTMLElement;
     const nameChars = getNameChars(speaker);
@@ -93,12 +90,12 @@ export const createLetterScatter = definePoster({
         }
       });
 
-      changeFontSize(canvas, '.letter-scatter__letter', 10, 40);
+      changeFontSize(canvas, '.letter-scatter__letter', fontMin, fontMax);
       letterCount++;
-    }, SCATTER_INTERVAL / speed);
+    }, scatterInterval / speed);
 
     manager.addInterval(() => {
       bg.style.backgroundColor = getRandomItem(colors);
-    }, 8000 / speed);
+    }, bgColorInterval / speed);
   },
 });

@@ -4,7 +4,7 @@ import { speakerToStrings, wrapInRandomElement } from '../../utilities/text-tran
 import { HTML_TAGS } from '../../data/tags';
 import './text-explosion.css';
 
-const INTERVAL_MS = 1200;
+const DEFAULT_EMIT_INTERVAL = 1200;
 
 function getWords(ctx: PosterContext): string[] {
   const strings = speakerToStrings(ctx.speaker);
@@ -31,6 +31,7 @@ export const createTextExplosion = definePoster({
 
   animate(ctx: PosterContext, manager) {
     const speed = ctx.config.speed ?? 1;
+    const emitInterval = ctx.config.intervals?.emit ?? DEFAULT_EMIT_INTERVAL;
     const content = ctx.container.querySelector('.text-explosion__content')!;
     const words = getWords(ctx);
     let counter = 0;
@@ -41,6 +42,6 @@ export const createTextExplosion = definePoster({
       child.innerHTML = wrapInRandomElement(word, HTML_TAGS);
       content.insertBefore(child, content.firstChild);
       counter++;
-    }, INTERVAL_MS / speed);
+    }, emitInterval / speed);
   },
 });

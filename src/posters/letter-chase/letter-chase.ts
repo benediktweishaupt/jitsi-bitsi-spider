@@ -5,8 +5,8 @@ import { cssIDGradient } from '../../utilities/gradients';
 import { PALETTES } from '../../utilities/color-palettes';
 import './letter-chase.css';
 
-const MOVE_INTERVAL = 1500;
-const CANVAS_UPDATE_INTERVAL = 4000;
+const DEFAULT_MOVE_INTERVAL = 1500;
+const DEFAULT_BG_INTERVAL = 4000;
 const SYMBOLS = ['■', '●', '▲'];
 
 function getAllChars(speaker: PosterContext['speaker']): string[] {
@@ -45,6 +45,8 @@ export const createLetterChase = definePoster({
 
   animate({ container, speaker, config }: PosterContext, manager) {
     const speed = config.speed ?? 1;
+    const moveInterval = config.intervals?.move ?? DEFAULT_MOVE_INTERVAL;
+    const bgInterval = config.intervals?.background ?? DEFAULT_BG_INTERVAL;
     const colors = config.colors ?? [...PALETTES.primary];
     const canvas = container.querySelector('.letter-chase__canvas') as HTMLElement;
     const allChars = getAllChars(speaker);
@@ -75,10 +77,10 @@ export const createLetterChase = definePoster({
 
     manager.addInterval(() => {
       letterCount = (letterCount + 1) % allChars.length;
-    }, MOVE_INTERVAL / speed);
+    }, moveInterval / speed);
 
     manager.addInterval(() => {
       cssIDGradient(container, '.letter-chase__canvas', colors);
-    }, CANVAS_UPDATE_INTERVAL / speed);
+    }, bgInterval / speed);
   },
 });

@@ -6,7 +6,7 @@ import { PALETTES } from '../../utilities/color-palettes';
 import { FONTS } from '../../utilities/font-stacks';
 import './screen-flicker.css';
 
-const INTERVAL_MS = 500;
+const DEFAULT_FLICKER_INTERVAL = 500;
 
 const SEL_SELECTED = '.screen-flicker__screen--selected';
 const CLS_SELECTED = 'screen-flicker__screen--selected';
@@ -37,6 +37,7 @@ export const createScreenFlicker = definePoster({
 
   animate({ container, speaker, config }: PosterContext, manager) {
     const speed = config.speed ?? 1;
+    const flickerInterval = config.intervals?.flicker ?? DEFAULT_FLICKER_INTERVAL;
     const colors = config.colors ?? [...PALETTES.warm];
     const fonts = config.fonts ?? [...FONTS.display];
     const stage = container.querySelector('.screen-flicker__stage') as HTMLElement;
@@ -67,6 +68,6 @@ export const createScreenFlicker = definePoster({
       }
 
       i++;
-    }, INTERVAL_MS / speed);
+    }, flickerInterval / speed);
   },
 });
