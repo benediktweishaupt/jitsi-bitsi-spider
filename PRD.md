@@ -1,101 +1,11 @@
 # PRD — Jitsi Bitsi Spider
 
-## Vision
-
-A system that takes speaker data and outputs animated, interactive posters. Each poster style is a self-contained component with its own visual language and animation logic. Same data in, different visual output — every time.
-
-## Core Concept
-
-One unified speaker data object. Many visual interpretations. A designer picks a poster style, feeds it the data, and gets a finished animated poster. No manual layout work, no per-speaker design decisions.
-
-## Speaker Data Interface
-
-Every poster component accepts a single `speaker` prop:
-
-```typescript
-interface Speaker {
-  name: string
-  editionNumber: number
-  date: string              // ISO date: 'YYYY-MM-DD'
-  time: string              // ISO time: 'HH:MM:SS+TZ'
-  caption: {
-    en: string
-    de: string
-  }
-  image?: string            // Path to speaker image
-  link?: string             // Meeting/event URL
-  bio?: {
-    en: { text: string; link: string | string[] }
-    de: { text: string; link: string | string[] }
-  }
-}
-```
-
-Every poster must work with just `name`, `editionNumber`, `date`, `time`, and `caption`. The rest is optional — posters that need images or bios gracefully degrade without them.
-
-## Poster Requirements
-
-Each poster component:
-
-- Implements the `PosterFactory` signature: `(container, speaker, config?) => Cleanup`
-- Is a self-contained TypeScript module with co-located CSS and Storybook story
-- Owns its animation logic, color palette, and timing
-- Renders as a full-viewport experience (100vw × 100vh)
-- Uses scoped DOM queries (`container.querySelector`, never `document`)
-- Uses `IntervalManager` for animation lifecycle and cleanup
-- Has a corresponding Storybook story with speaker selector and config controls
-- Works with any speaker — not hardcoded to one
-
-## Visual Styles
-
-The system should support visually distinct poster styles. Examples of approaches:
-
-- **Kinetic typography** — text that moves, splits, nests, or morphs
-- **Image reveal** — speaker images unveiled through interaction or time
-- **Grid mutations** — layouts that shift, resize, recolor on intervals
-- **Mouse-driven** — elements that follow or react to cursor position
-- **Screen flicker** — rapid content switching with font/color cycling
-- **Generative pattern** — algorithmic compositions from speaker data
-
-Each style is a standalone interpretation. There is no "default" — every poster is a design statement.
-
-## Storybook Documentation
-
-Each poster has a story that:
-
-- Renders the poster with default speaker data
-- Exposes the `speaker` prop via Storybook Controls
-- Allows switching between different speakers to verify the design works universally
-- Lives at `Design System/Poster/[StyleName]`
-
-## Extensibility
-
-Adding a new poster style means:
-
-1. Create `src/posters/my-poster/my-poster.ts` — export a `PosterFactory`
-2. Create `src/posters/my-poster/my-poster.css` — BEM-scoped styles
-3. Create `src/posters/my-poster/my-poster.stories.ts` — Storybook story
-4. Add export to `src/index.ts`
-5. No changes to data, routing, or infrastructure
-
-The poster receives data — it does not fetch, transform, or depend on anything outside its own file and the shared utilities.
-
-## Technical Target
-
-- TypeScript — no framework, imperative DOM manipulation
-- Storybook 8+ HTML (`@storybook/html-vite`) — only display layer
-- Vite 6 — bundler
-- Vanilla CSS (BEM) — `.poster-name__element--modifier`
-- Clean separation: data layer knows nothing about presentation, poster components know nothing about routing
-- Static site output
-- No Svelte, no Tailwind, no jQuery, no paper.js
-
 ## Backlog — Missing Posters
 
 The following speakers still need unique poster designs. They currently only exist as reference images in the source material — no original animation code was written for them.
 
 | Speaker | Edition | Source Material | Notes |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Prem Krishnamurthy | #6 | Images only | Currently uses letter-grid variant as placeholder |
 | Jan Middendorp | #8 | Template stub | No original design existed |
 | Stephanie Wunderlich | #9 | Images only | Currently uses letter-scatter variant as placeholder |
@@ -104,7 +14,7 @@ The following speakers still need unique poster designs. They currently only exi
 ### Completed but needs porting
 
 | Speaker | Edition | Source Material | Notes |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Michael Spranger | #12 | Full standalone HTML/CSS/JS project | `jitsi-bitsi-spider-source-material/jitsi-bitsi-michael-spranger/` — uses jQuery, needs rewrite to vanilla TS |
 
 ## Backlog — Info Backside
@@ -128,3 +38,31 @@ Every poster should have an **info backside** that reveals speaker details via a
 - Clicking the info button toggles a `.poster--flipped` class
 - Clicking the info button again (or a close button on the back) flips back
 - Must not interfere with poster-specific mouse/touch interactions
+
+---
+
+## Changelog
+
+### 2026-03-03 — DRY architecture + visual portfolio
+
+- **`definePoster()` scaffold** — extracted shared lifecycle (container setup, reduced-motion check, animation start, IntervalManager cleanup) into `src/utilities/poster-scaffold.ts`. All 8 posters refactored to use it.
+- **Configurable PosterConfig** — enriched with `intervals`, `counts`, `ranges` (named overrides with fallback defaults). Every hardcoded constant in all 8 posters is now configurable. Deleted ad-hoc `LetterGridConfig`/`LetterScatterConfig` interfaces.
+- **Content-adaptive defaults** — letter-grid chunk size defaults to `Math.ceil(nameLength / 3)` instead of fixed 5.
+- **Storybook controls** — all 8 stories expose relevant config as controls (interval sliders, count/range inputs, palette/font selectors). 2-3 preset story variants per poster.
+- **Gallery story** — `Overview/Gallery` renders all 8 posters in a 4x2 grid.
+- **Screenshot script** — Playwright captures each poster + gallery to `docs/screenshots/`.
+- **README rewrite** — poster image gallery, usage example, correct stack info.
+
+### 2026-03-03 — Visual QA
+
+- Changed poster format from 2:3 to 1:1 (square).
+- Per-poster bug fixes: TextExplosion overflow, WordReveal image/link rendering, LetterGrid background image + border radius, LetterChase symbols + gradient background, ScreenFlicker font/shadow cycling, LetterScatter font size + background color, PhysicsBlobs stable color + speaker name layer, StaticTypography caption text.
+- Fixed Storybook visibility (dark gray body background, removed autodocs).
+
+### 2026-03-02 — Migration to vanilla TypeScript
+
+- Migrated from SvelteKit/Svelte/Tailwind to vanilla TypeScript + Storybook HTML.
+- Rewrote all 8 posters as imperative DOM manipulation with `PosterFactory` pattern.
+- Replaced paper.js with custom `Vec2` math + `Blob` class.
+- Created shared utilities: `IntervalManager`, style mutations, text transforms, color palettes, font stacks, gradients.
+- Upgraded Storybook from 8.x to 10.x.
