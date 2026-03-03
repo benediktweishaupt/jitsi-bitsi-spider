@@ -142,3 +142,4 @@ dist
 
 # Claude Code
 .claude/
+storybook-static
