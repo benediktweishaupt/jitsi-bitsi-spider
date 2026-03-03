@@ -33,43 +33,72 @@ function createAboutSection(): HTMLElement {
   const about = document.createElement('div');
   about.style.cssText = 'max-width: 720px; margin: 0 auto; padding: 48px 24px 32px; font-family: system-ui, -apple-system, sans-serif; color: #ccc; line-height: 1.6;';
 
+  const code = (text: string) => `<code style="background: #333; padding: 2px 6px; border-radius: 3px; font-size: 13px;">${text}</code>`;
+
   about.innerHTML = `
     <h1 style="font-size: 28px; font-weight: 700; color: #fff; margin: 0 0 8px;">Jitsi Bitsi Spider</h1>
-    <p style="font-size: 14px; color: #777; margin: 0 0 24px;">Generative poster system for animated typographic posters</p>
+    <p style="font-size: 14px; color: #777; margin: 0 0 32px;">A component library of animated typographic poster patterns</p>
 
+    <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">What is this?</h2>
     <p style="margin: 0 0 16px;">
-      <em>Jitsi Bitsi Spider</em> was a lecture series at
-      <strong style="color: #fff;">Kunsthochschule Weissensee</strong>, Berlin,
-      initiated by <strong style="color: #fff;">Matthias Hubner</strong> in 2020.
-      During the early months of the pandemic, guest speakers presented their work
-      via Jitsi video calls &mdash; hence the name, a nod to the nursery rhyme and
-      the open-source video platform.
+      A collection of 8 animated poster components. Each one takes structured speaker
+      data &mdash; a name, date, caption, optional image &mdash; and turns it into a
+      full-screen typographic animation. Same data in, different visual output.
     </p>
 
+    <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">How to use</h2>
+    <p style="margin: 0 0 12px;">
+      Every poster is a factory function with the same signature:
+    </p>
+    <pre style="background: #1a1a1a; border: 1px solid #333; border-radius: 4px; padding: 16px; margin: 0 0 16px; font-size: 13px; line-height: 1.5; overflow-x: auto; color: #ddd;">const cleanup = createLetterGrid(container, speaker, {
+  colors: ['black', 'white'],
+  speed: 1.5,
+  intervals: { fast: 800, slow: 6000 },
+});</pre>
     <p style="margin: 0 0 16px;">
-      Each speaker received a unique animated poster. Rather than designing each one
-      from scratch, I built a generative system: feed it speaker data &mdash; name,
-      date, caption, image &mdash; and it produces a different visual interpretation
-      every time. 8 distinct poster patterns, 13 speakers, same data interface.
+      Pass a DOM container, a ${code('Speaker')} object, and optional
+      ${code('PosterConfig')} overrides. The function builds the DOM, starts the
+      animation, and returns a cleanup function that stops everything.
     </p>
 
+    <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">What you can configure</h2>
+    <ul style="margin: 0 0 16px; padding-left: 20px;">
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">Colors</strong> &mdash; color palette per poster (monochrome, primary, warm, or custom arrays)</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">Fonts</strong> &mdash; font stacks for posters that cycle typefaces (display, elegant)</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">Speed</strong> &mdash; global speed multiplier (0.25&ndash;4x)</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">Intervals</strong> &mdash; named timing values per poster (emit, flicker, scatter, reveal, ...)</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">Counts</strong> &mdash; blob count, chunk size, etc.</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">Ranges</strong> &mdash; font size range, blob radius range, etc.</li>
+    </ul>
     <p style="margin: 0 0 16px;">
-      The posters explore kinetic typography, grid mutations, mouse-driven letter placement,
-      screen flickering, scattered letterforms, canvas-based physics, and static typographic
-      composition. Each pattern is a self-contained factory function with its own animation
-      logic, color system, and timing &mdash; configurable through a shared
-      <code style="background: #333; padding: 2px 6px; border-radius: 3px; font-size: 13px;">PosterConfig</code> interface.
+      Use the sidebar to explore each poster. Every story has Storybook controls that
+      let you adjust these parameters in real time.
     </p>
 
+    <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">The 8 patterns</h2>
+    <ul style="margin: 0 0 16px; padding-left: 20px;">
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">TextExplosion</strong> &mdash; speaker data wrapped in random HTML elements, accumulating on screen</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">WordReveal</strong> &mdash; word-by-word text reveal with parallax image</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">LetterGrid</strong> &mdash; flex grid of letters with mutating sizes, colors, and border radii</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">LetterChase</strong> &mdash; letters that follow the mouse cursor across a gradient canvas</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">ScreenFlicker</strong> &mdash; rapid screen cycling with font and color switching</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">LetterScatter</strong> &mdash; large scattered letterforms with optional blur and color burn</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">PhysicsBlobs</strong> &mdash; canvas-based blob physics with collision detection</li>
+      <li style="margin-bottom: 6px;"><strong style="color: #fff;">StaticTypography</strong> &mdash; CSS-only typographic composition, no animation</li>
+    </ul>
+
+    <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">Technical details</h2>
     <p style="margin: 0 0 16px;">
-      Built with vanilla TypeScript, no framework. Zero runtime dependencies. Every poster
-      is imperative DOM manipulation &mdash; elements are created, styled, and animated
-      directly. The entire system runs in the browser with nothing but the standard Web API.
+      Vanilla TypeScript, zero runtime dependencies. Each poster is imperative DOM
+      manipulation &mdash; no framework, no virtual DOM. All DOM queries are scoped
+      to the container (never ${code('document')}), so multiple posters can coexist.
+      Animations are managed by an ${code('IntervalManager')} that tracks intervals,
+      timeouts, listeners, and rAF &mdash; calling ${code('cleanup()')} stops everything.
     </p>
 
-    <p style="margin: 0 0 8px; color: #777; font-size: 13px;">
-      Use the sidebar to explore each poster individually with Storybook controls,
-      or scroll down to see all 8 running side by side.
+    <p style="margin: 0 0 8px; color: #666; font-size: 13px;">
+      Originally built for <em>Jitsi Bitsi Spider</em>, a lecture series at
+      Kunsthochschule Weissensee initiated by Matthias Hubner (2020).
     </p>
 
     <hr style="border: none; border-top: 1px solid #333; margin: 32px 0;">
