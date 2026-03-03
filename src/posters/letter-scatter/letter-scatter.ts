@@ -43,7 +43,7 @@ export function createLetterScatter(
   container.appendChild(data);
 
   // Extract unique letters from name
-  const nameChars = speaker.name.replace(/\s/g, '').split('').slice(0, 10);
+  const nameChars = speaker.name.replace(/\s/g, '').split('');
 
   // Create letter elements in both canvas and background layers
   [canvas, bg].forEach((layer) => {
@@ -99,7 +99,7 @@ export function createLetterScatter(
   // Background color changes
   manager.addInterval(() => {
     bg.style.backgroundColor = getRandomItem(colors);
-  }, 3470 / speed);
+  }, 8000 / speed);
 
   manager.watchForRemoval(container);
   return () => manager.cleanup();

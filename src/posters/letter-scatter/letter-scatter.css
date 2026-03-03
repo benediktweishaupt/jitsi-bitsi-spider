@@ -19,7 +19,7 @@
 }
 
 .letter-scatter__background--blur {
-  filter: blur(60px);
+  filter: blur(8px);
   transition: all 1s linear;
 }
 
