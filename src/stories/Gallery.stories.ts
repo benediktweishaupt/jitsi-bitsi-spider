@@ -13,20 +13,21 @@ import { createStaticTypography } from '../posters/static-typography/static-typo
 
 interface PosterEntry {
   label: string;
+  description: string;
   factory: PosterFactory;
   speakerIndex: number;
   config?: Record<string, unknown>;
 }
 
 const POSTERS: PosterEntry[] = [
-  { label: 'TextExplosion', factory: createTextExplosion, speakerIndex: 0 },
-  { label: 'WordReveal', factory: createWordReveal, speakerIndex: 1 },
-  { label: 'LetterGrid', factory: createLetterGrid, speakerIndex: 2, config: { animatedBackground: true, backgroundImage: 'img/nontsikelelo-mutiti/background.png', colors: [...PALETTES.monochrome] } },
-  { label: 'LetterChase', factory: createLetterChase, speakerIndex: 3 },
-  { label: 'ScreenFlicker', factory: createScreenFlicker, speakerIndex: 4 },
-  { label: 'LetterScatter', factory: createLetterScatter, speakerIndex: 6 },
-  { label: 'PhysicsBlobs', factory: createPhysicsBlobs, speakerIndex: 10 },
-  { label: 'StaticTypography', factory: createStaticTypography, speakerIndex: 12 },
+  { label: 'TextExplosion', description: 'Speaker data wrapped in random HTML elements, accumulating on screen', factory: createTextExplosion, speakerIndex: 0 },
+  { label: 'WordReveal', description: 'Word-by-word text reveal with parallax image', factory: createWordReveal, speakerIndex: 1 },
+  { label: 'LetterGrid', description: 'Flex grid of letters with mutating sizes, colors, and border radii', factory: createLetterGrid, speakerIndex: 2, config: { animatedBackground: true, backgroundImage: 'img/nontsikelelo-mutiti/background.png', colors: [...PALETTES.monochrome] } },
+  { label: 'LetterChase', description: 'Letters that follow the mouse cursor across a gradient canvas', factory: createLetterChase, speakerIndex: 3 },
+  { label: 'ScreenFlicker', description: 'Rapid screen cycling with font and color switching', factory: createScreenFlicker, speakerIndex: 4 },
+  { label: 'LetterScatter', description: 'Large scattered letterforms with optional blur and color burn', factory: createLetterScatter, speakerIndex: 6 },
+  { label: 'PhysicsBlobs', description: 'Canvas-based blob physics with collision detection', factory: createPhysicsBlobs, speakerIndex: 10 },
+  { label: 'StaticTypography', description: 'CSS-only typographic composition, no animation', factory: createStaticTypography, speakerIndex: 12 },
 ];
 
 function createAboutSection(): HTMLElement {
@@ -75,18 +76,6 @@ function createAboutSection(): HTMLElement {
       let you adjust these parameters in real time.
     </p>
 
-    <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">The 8 patterns</h2>
-    <ul style="margin: 0 0 16px; padding-left: 20px;">
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">TextExplosion</strong> &mdash; speaker data wrapped in random HTML elements, accumulating on screen</li>
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">WordReveal</strong> &mdash; word-by-word text reveal with parallax image</li>
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">LetterGrid</strong> &mdash; flex grid of letters with mutating sizes, colors, and border radii</li>
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">LetterChase</strong> &mdash; letters that follow the mouse cursor across a gradient canvas</li>
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">ScreenFlicker</strong> &mdash; rapid screen cycling with font and color switching</li>
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">LetterScatter</strong> &mdash; large scattered letterforms with optional blur and color burn</li>
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">PhysicsBlobs</strong> &mdash; canvas-based blob physics with collision detection</li>
-      <li style="margin-bottom: 6px;"><strong style="color: #fff;">StaticTypography</strong> &mdash; CSS-only typographic composition, no animation</li>
-    </ul>
-
     <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">Technical details</h2>
     <p style="margin: 0 0 16px;">
       Vanilla TypeScript, zero runtime dependencies. Each poster is imperative DOM
@@ -107,32 +96,43 @@ function createAboutSection(): HTMLElement {
   return about;
 }
 
-function createPosterGrid(): { grid: HTMLElement; cleanups: (() => void)[] } {
+function createPosterGrid(): { section: HTMLElement; cleanups: (() => void)[] } {
   const cleanups: (() => void)[] = [];
 
+  const section = document.createElement('div');
+  section.style.cssText = 'max-width: 1400px; margin: 0 auto; padding: 0 8px 48px;';
+
+  const heading = document.createElement('h2');
+  heading.textContent = 'The 8 patterns';
+  heading.style.cssText = 'font: 600 16px/1 system-ui, sans-serif; color: #fff; margin: 0 0 16px; padding: 0 4px;';
+  section.appendChild(heading);
+
   const grid = document.createElement('div');
-  grid.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 0 8px 8px; max-width: 1400px; margin: 0 auto;';
+  grid.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;';
+  section.appendChild(grid);
 
   POSTERS.forEach((entry) => {
     const cell = document.createElement('div');
-    cell.style.cssText = 'position: relative; aspect-ratio: 1; overflow: hidden;';
-
-    const label = document.createElement('div');
-    label.textContent = entry.label;
-    label.style.cssText = 'position: absolute; bottom: 4px; left: 4px; z-index: 10; font: 10px/1 monospace; color: #999; pointer-events: none;';
 
     const posterContainer = document.createElement('div');
-    posterContainer.style.cssText = 'width: 100%; height: 100%;';
+    posterContainer.style.cssText = 'width: 100%; aspect-ratio: 1; overflow: hidden;';
+
+    const caption = document.createElement('div');
+    caption.style.cssText = 'padding: 8px 0; font-family: system-ui, sans-serif;';
+    caption.innerHTML = `
+      <div style="font-size: 13px; font-weight: 600; color: #fff;">${entry.label}</div>
+      <div style="font-size: 12px; color: #888; margin-top: 2px;">${entry.description}</div>
+    `;
 
     cell.appendChild(posterContainer);
-    cell.appendChild(label);
+    cell.appendChild(caption);
     grid.appendChild(cell);
 
     const cleanup = entry.factory(posterContainer, speakers[entry.speakerIndex], entry.config);
     cleanups.push(cleanup);
   });
 
-  return { grid, cleanups };
+  return { section, cleanups };
 }
 
 const meta: Meta = {
@@ -150,8 +150,8 @@ export const About: Story = {
 
     wrapper.appendChild(createAboutSection());
 
-    const { grid, cleanups } = createPosterGrid();
-    wrapper.appendChild(grid);
+    const { section, cleanups } = createPosterGrid();
+    wrapper.appendChild(section);
 
     (wrapper as any).__cleanup = () => cleanups.forEach((fn) => fn());
     return wrapper;
