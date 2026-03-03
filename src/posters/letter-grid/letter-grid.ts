@@ -14,7 +14,7 @@ export interface LetterGridConfig extends PosterConfig {
 }
 
 const LETTER_CLASSES = ['letter-grid__letter--black', 'letter-grid__letter--white'] as const;
-const DEFAULT_BORDER_RADIUS = ['25vw', '25vw', '25vw', '100vw', '50px', '10vw', '20vw', '10vw', '0'];
+const DEFAULT_BORDER_RADIUS = ['25cqw', '25cqw', '25cqw', '100cqw', '50px', '10cqw', '20cqw', '10cqw', '0'];
 
 export function createLetterGrid(
   container: HTMLElement,

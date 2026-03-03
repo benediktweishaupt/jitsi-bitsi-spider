@@ -67,8 +67,8 @@ export function createLetterScatter(
       ['fg', 'bg'].forEach((prefix) => {
         const el = container.querySelector(`#${prefix}-letter-${i}`) as HTMLElement;
         if (el) {
-          el.style.left = `${x}vw`;
-          el.style.top = `${y}vh`;
+          el.style.left = `${x}%`;
+          el.style.top = `${y}%`;
         }
       });
     });
@@ -80,8 +80,8 @@ export function createLetterScatter(
   // Scatter letters at interval
   manager.addInterval(() => {
     const idx = letterCount % nameChars.length;
-    const x = getRandomInt(60, window.innerWidth - 60);
-    const y = getRandomInt(60, window.innerHeight - 60);
+    const x = getRandomInt(60, container.clientWidth - 60);
+    const y = getRandomInt(60, container.clientHeight - 60);
 
     ['fg', 'bg'].forEach((prefix) => {
       const el = container.querySelector(`#${prefix}-letter-${idx}`) as HTMLElement;

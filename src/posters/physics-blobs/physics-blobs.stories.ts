@@ -22,8 +22,8 @@ const meta: Meta<PhysicsBlobsArgs> = {
   },
   render: (args) => {
     const container = document.createElement('div');
-    container.style.width = '100vw';
-    container.style.height = '100vh';
+    container.style.width = '100%';
+    container.style.height = '100%';
     const cleanup = createPhysicsBlobs(container, args.speaker);
     (container as any).__cleanup = cleanup;
     return container;

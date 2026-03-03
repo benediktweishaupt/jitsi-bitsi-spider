@@ -66,7 +66,7 @@ export function createScreenFlicker(
         changeFontFamily(stage, SEL_SELECTED, fonts);
         changeBoxShadow(stage, SEL_SELECTED, colors);
       } else {
-        active.style.fontSize = `${Math.max(idealSize, 2)}vh`;
+        active.style.fontSize = `${Math.max(idealSize, 2)}cqh`;
       }
 
       changeFontColorCss(stage, SEL_SELECTED, colors);

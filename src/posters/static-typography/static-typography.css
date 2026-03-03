@@ -6,8 +6,8 @@
 .static-typography__canvas {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 .static-typography__row {
@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  font-size: 8vh;
+  font-size: 8cqh;
   text-transform: uppercase;
   overflow: hidden;
   font-family: 'Cormorant', serif;

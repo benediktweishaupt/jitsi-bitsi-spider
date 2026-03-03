@@ -5,21 +5,21 @@
 
 .letter-chase__canvas {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
 .letter-chase__letter {
   position: absolute;
   font-family: 'Arial Black', Arial, sans-serif;
-  font-size: 55vh;
+  font-size: 55cqh;
   text-transform: uppercase;
   color: blue;
   mix-blend-mode: difference;
   opacity: 0;
-  margin-left: -25vh;
-  margin-top: -25vh;
+  margin-left: -25cqh;
+  margin-top: -25cqh;
   pointer-events: none;
   transition: color 0.3s ease;
   user-select: none;

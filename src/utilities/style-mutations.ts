@@ -1,7 +1,7 @@
 import { applyStyle } from './dom';
 import { getRandomInt, getRandomItem } from './random';
 
-/** Randomize font-size in vh units */
+/** Randomize font-size in cqh units (container query height) */
 export function changeFontSize(
   container: HTMLElement,
   selector: string,
@@ -9,7 +9,7 @@ export function changeFontSize(
   max = 10,
 ): void {
   applyStyle(container, selector, (el) => {
-    el.style.fontSize = `${getRandomInt(min, max)}vh`;
+    el.style.fontSize = `${getRandomInt(min, max)}cqh`;
   });
 }
 

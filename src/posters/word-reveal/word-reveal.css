@@ -6,9 +6,9 @@
 
 .word-reveal__text {
   flex: 1;
-  padding: 2vh;
+  padding: 2cqh;
   overflow-y: auto;
-  font-size: 4vh;
+  font-size: 4cqh;
   line-height: 1.4;
   font-family: Arial, sans-serif;
 }
@@ -28,10 +28,10 @@
 
 .word-reveal__link {
   position: absolute;
-  bottom: 2vh;
-  right: 2vh;
+  bottom: 2cqh;
+  right: 2cqh;
   color: green;
-  font-size: 2vh;
+  font-size: 2cqh;
   text-decoration: none;
   font-family: Arial, sans-serif;
   z-index: 10;

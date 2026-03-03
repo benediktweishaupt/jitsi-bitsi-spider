@@ -43,8 +43,8 @@ export function createLetterChase(
       const el = canvas.querySelector(`#letter-${String(i).padStart(2, '0')}`) as HTMLElement;
       if (el) {
         el.style.opacity = '1';
-        el.style.left = `${Math.random() * 80}vw`;
-        el.style.top = `${Math.random() * 80}vh`;
+        el.style.left = `${Math.random() * 80}%`;
+        el.style.top = `${Math.random() * 80}%`;
       }
     });
     return () => manager.cleanup();
@@ -55,8 +55,11 @@ export function createLetterChase(
   const moveHandler = (e: MouseEvent | TouchEvent) => {
     if (e.target !== canvas) return;
 
-    const x = 'touches' in e ? e.touches[0].pageX : e.pageX;
-    const y = 'touches' in e ? e.touches[0].pageY : e.pageY;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
 
     const id = `#letter-${String(letterCount).padStart(2, '0')}`;
     const letter = canvas.querySelector(id) as HTMLElement;
