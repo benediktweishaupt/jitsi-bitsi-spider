@@ -12,7 +12,6 @@ interface LetterGridArgs {
 
 const meta: Meta<LetterGridArgs> = {
   title: 'Posters/LetterGrid',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',

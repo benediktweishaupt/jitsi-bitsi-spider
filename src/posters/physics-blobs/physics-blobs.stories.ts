@@ -9,7 +9,6 @@ interface PhysicsBlobsArgs {
 
 const meta: Meta<PhysicsBlobsArgs> = {
   title: 'Posters/PhysicsBlobs',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',

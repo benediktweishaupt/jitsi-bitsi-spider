@@ -10,7 +10,6 @@ interface WordRevealArgs {
 
 const meta: Meta<WordRevealArgs> = {
   title: 'Posters/WordReveal',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',

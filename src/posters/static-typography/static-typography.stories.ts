@@ -9,7 +9,6 @@ interface StaticTypographyArgs {
 
 const meta: Meta<StaticTypographyArgs> = {
   title: 'Posters/StaticTypography',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',

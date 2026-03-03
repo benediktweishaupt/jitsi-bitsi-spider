@@ -7,9 +7,7 @@ const config: StorybookConfig = {
     name: '@storybook/html-vite',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
+  docs: {},
   staticDirs: ['../src/assets'],
 };
 

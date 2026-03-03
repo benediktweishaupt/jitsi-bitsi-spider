@@ -12,7 +12,6 @@ interface LetterScatterArgs {
 
 const meta: Meta<LetterScatterArgs> = {
   title: 'Posters/LetterScatter',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',

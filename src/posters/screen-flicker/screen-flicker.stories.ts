@@ -10,7 +10,6 @@ interface ScreenFlickerArgs {
 
 const meta: Meta<ScreenFlickerArgs> = {
   title: 'Posters/ScreenFlicker',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',

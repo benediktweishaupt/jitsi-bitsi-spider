@@ -10,7 +10,6 @@ interface LetterChaseArgs {
 
 const meta: Meta<LetterChaseArgs> = {
   title: 'Posters/LetterChase',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',

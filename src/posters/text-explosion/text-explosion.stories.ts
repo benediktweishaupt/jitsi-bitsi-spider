@@ -10,7 +10,6 @@ interface TextExplosionArgs {
 
 const meta: Meta<TextExplosionArgs> = {
   title: 'Posters/TextExplosion',
-  tags: ['autodocs'],
   argTypes: {
     speaker: {
       control: 'select',
