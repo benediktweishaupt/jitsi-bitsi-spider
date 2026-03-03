@@ -26,7 +26,7 @@ export function createLetterChase(
 
   // Build letters from speaker name + symbols
   const nameChars = speaker.name.replace(/\s/g, '').split('');
-  const allChars = [...nameChars.slice(0, 7), ...SYMBOLS].slice(0, 10);
+  const allChars = [...nameChars, ...SYMBOLS];
 
   allChars.forEach((char, i) => {
     const el = document.createElement('div');
