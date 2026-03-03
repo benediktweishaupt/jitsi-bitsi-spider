@@ -1,7 +1,8 @@
-import type { Speaker, PosterConfig, Cleanup } from '../../types/speaker';
-import { IntervalManager, prefersReducedMotion } from '../../utilities/animation';
+import type { PosterConfig } from '../../types/speaker';
+import type { PosterContext } from '../../utilities/poster-scaffold';
+import { definePoster } from '../../utilities/poster-scaffold';
 import { getRandomInt, getRandomItem } from '../../utilities/random';
-import { changeFontColorCss, changeFontSize } from '../../utilities/style-mutations';
+import { changeFontSize } from '../../utilities/style-mutations';
 import { PALETTES } from '../../utilities/color-palettes';
 import './letter-scatter.css';
 
@@ -12,55 +13,50 @@ export interface LetterScatterConfig extends PosterConfig {
 
 const SCATTER_INTERVAL = 1361;
 
-export function createLetterScatter(
-  container: HTMLElement,
-  speaker: Speaker,
-  config?: LetterScatterConfig,
-): Cleanup {
-  const manager = new IntervalManager();
-  const speed = config?.speed ?? 1;
-  const colors = config?.colors ?? [...PALETTES.primary];
+function getNameChars(speaker: PosterContext['speaker']): string[] {
+  return speaker.name.replace(/\s/g, '').split('');
+}
 
-  container.classList.add('poster', 'letter-scatter');
-  container.style.position = 'relative';
+export const createLetterScatter = definePoster({
+  name: 'letter-scatter',
 
-  // Canvas layer
-  const canvas = document.createElement('div');
-  canvas.classList.add('letter-scatter__canvas');
-  container.appendChild(canvas);
+  build({ container, speaker, config }: PosterContext) {
+    const scatterConfig = config as LetterScatterConfig;
+    container.style.position = 'relative';
 
-  // Background layer
-  const bg = document.createElement('div');
-  bg.classList.add('letter-scatter__background');
-  if (config?.blurBackground) {
-    bg.classList.add('letter-scatter__background--blur');
-  }
-  container.appendChild(bg);
+    const canvas = document.createElement('div');
+    canvas.classList.add('letter-scatter__canvas');
+    container.appendChild(canvas);
 
-  // Data layer (mix-blend-mode: difference)
-  const data = document.createElement('div');
-  data.classList.add('letter-scatter__data');
-  container.appendChild(data);
+    const bg = document.createElement('div');
+    bg.classList.add('letter-scatter__background');
+    if (scatterConfig.blurBackground) {
+      bg.classList.add('letter-scatter__background--blur');
+    }
+    container.appendChild(bg);
 
-  // Extract unique letters from name
-  const nameChars = speaker.name.replace(/\s/g, '').split('');
+    const data = document.createElement('div');
+    data.classList.add('letter-scatter__data');
+    container.appendChild(data);
 
-  // Create letter elements in both canvas and background layers
-  [canvas, bg].forEach((layer) => {
-    nameChars.forEach((char, i) => {
-      const el = document.createElement('div');
-      el.classList.add('letter-scatter__letter');
-      if (config?.colorBurn) {
-        el.classList.add('letter-scatter__letter--color-burn');
-      }
-      el.id = `${layer === canvas ? 'fg' : 'bg'}-letter-${i}`;
-      el.textContent = char;
-      layer.appendChild(el);
+    const nameChars = getNameChars(speaker);
+
+    [canvas, bg].forEach((layer) => {
+      nameChars.forEach((char, i) => {
+        const el = document.createElement('div');
+        el.classList.add('letter-scatter__letter');
+        if (scatterConfig.colorBurn) {
+          el.classList.add('letter-scatter__letter--color-burn');
+        }
+        el.id = `${layer === canvas ? 'fg' : 'bg'}-letter-${i}`;
+        el.textContent = char;
+        layer.appendChild(el);
+      });
     });
-  });
+  },
 
-  // Static fallback
-  if (prefersReducedMotion() && config?.reduceMotion !== false) {
+  staticFallback({ container, speaker }: PosterContext) {
+    const nameChars = getNameChars(speaker);
     nameChars.forEach((_, i) => {
       const x = getRandomInt(10, 80);
       const y = getRandomInt(10, 80);
@@ -72,35 +68,37 @@ export function createLetterScatter(
         }
       });
     });
-    return () => manager.cleanup();
-  }
+  },
 
-  let letterCount = 0;
+  animate({ container, speaker, config }: PosterContext, manager) {
+    const speed = config.speed ?? 1;
+    const colors = config.colors ?? [...PALETTES.primary];
+    const canvas = container.querySelector('.letter-scatter__canvas') as HTMLElement;
+    const bg = container.querySelector('.letter-scatter__background') as HTMLElement;
+    const nameChars = getNameChars(speaker);
 
-  // Scatter letters at interval
-  manager.addInterval(() => {
-    const idx = letterCount % nameChars.length;
-    const x = getRandomInt(60, container.clientWidth - 60);
-    const y = getRandomInt(60, container.clientHeight - 60);
+    let letterCount = 0;
 
-    ['fg', 'bg'].forEach((prefix) => {
-      const el = container.querySelector(`#${prefix}-letter-${idx}`) as HTMLElement;
-      if (el) {
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        el.style.color = getRandomItem(colors);
-      }
-    });
+    manager.addInterval(() => {
+      const idx = letterCount % nameChars.length;
+      const x = getRandomInt(60, container.clientWidth - 60);
+      const y = getRandomInt(60, container.clientHeight - 60);
 
-    changeFontSize(canvas, '.letter-scatter__letter', 10, 40);
-    letterCount++;
-  }, SCATTER_INTERVAL / speed);
+      ['fg', 'bg'].forEach((prefix) => {
+        const el = container.querySelector(`#${prefix}-letter-${idx}`) as HTMLElement;
+        if (el) {
+          el.style.left = `${x}px`;
+          el.style.top = `${y}px`;
+          el.style.color = getRandomItem(colors);
+        }
+      });
 
-  // Background color changes
-  manager.addInterval(() => {
-    bg.style.backgroundColor = getRandomItem(colors);
-  }, 8000 / speed);
+      changeFontSize(canvas, '.letter-scatter__letter', 10, 40);
+      letterCount++;
+    }, SCATTER_INTERVAL / speed);
 
-  manager.watchForRemoval(container);
-  return () => manager.cleanup();
-}
+    manager.addInterval(() => {
+      bg.style.backgroundColor = getRandomItem(colors);
+    }, 8000 / speed);
+  },
+});

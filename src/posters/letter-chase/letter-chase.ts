@@ -1,5 +1,5 @@
-import type { Speaker, PosterConfig, Cleanup } from '../../types/speaker';
-import { IntervalManager, prefersReducedMotion } from '../../utilities/animation';
+import type { PosterContext } from '../../utilities/poster-scaffold';
+import { definePoster } from '../../utilities/poster-scaffold';
 import { changeFontColorCss } from '../../utilities/style-mutations';
 import { cssIDGradient } from '../../utilities/gradients';
 import { PALETTES } from '../../utilities/color-palettes';
@@ -9,37 +9,31 @@ const MOVE_INTERVAL = 1500;
 const CANVAS_UPDATE_INTERVAL = 4000;
 const SYMBOLS = ['■', '●', '▲'];
 
-export function createLetterChase(
-  container: HTMLElement,
-  speaker: Speaker,
-  config?: PosterConfig,
-): Cleanup {
-  const manager = new IntervalManager();
-  const speed = config?.speed ?? 1;
-  const colors = config?.colors ?? [...PALETTES.primary];
-
-  container.classList.add('poster', 'letter-chase');
-
-  const canvas = document.createElement('div');
-  canvas.classList.add('letter-chase__canvas');
-  container.appendChild(canvas);
-
-  // Build letters from speaker name + symbols
+function getAllChars(speaker: PosterContext['speaker']): string[] {
   const nameChars = speaker.name.replace(/\s/g, '').split('');
-  const allChars = [...nameChars, ...SYMBOLS];
+  return [...nameChars, ...SYMBOLS];
+}
 
-  allChars.forEach((char, i) => {
-    const el = document.createElement('div');
-    el.classList.add('letter-chase__letter');
-    el.id = `letter-${String(i).padStart(2, '0')}`;
-    el.textContent = char;
-    canvas.appendChild(el);
-  });
+export const createLetterChase = definePoster({
+  name: 'letter-chase',
 
-  // Static fallback
-  if (prefersReducedMotion() && config?.reduceMotion !== false) {
-    // Show all letters scattered statically
-    allChars.forEach((_, i) => {
+  build({ container, speaker }: PosterContext) {
+    const canvas = document.createElement('div');
+    canvas.classList.add('letter-chase__canvas');
+    container.appendChild(canvas);
+
+    getAllChars(speaker).forEach((char, i) => {
+      const el = document.createElement('div');
+      el.classList.add('letter-chase__letter');
+      el.id = `letter-${String(i).padStart(2, '0')}`;
+      el.textContent = char;
+      canvas.appendChild(el);
+    });
+  },
+
+  staticFallback({ container, speaker }: PosterContext) {
+    const canvas = container.querySelector('.letter-chase__canvas')!;
+    getAllChars(speaker).forEach((_, i) => {
       const el = canvas.querySelector(`#letter-${String(i).padStart(2, '0')}`) as HTMLElement;
       if (el) {
         el.style.opacity = '1';
@@ -47,43 +41,44 @@ export function createLetterChase(
         el.style.top = `${Math.random() * 80}%`;
       }
     });
-    return () => manager.cleanup();
-  }
+  },
 
-  let letterCount = 0;
+  animate({ container, speaker, config }: PosterContext, manager) {
+    const speed = config.speed ?? 1;
+    const colors = config.colors ?? [...PALETTES.primary];
+    const canvas = container.querySelector('.letter-chase__canvas') as HTMLElement;
+    const allChars = getAllChars(speaker);
 
-  const moveHandler = (e: MouseEvent | TouchEvent) => {
-    if (e.target !== canvas) return;
+    let letterCount = 0;
 
-    const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
+    const moveHandler = (e: MouseEvent | TouchEvent) => {
+      if (e.target !== canvas) return;
 
-    const id = `#letter-${String(letterCount).padStart(2, '0')}`;
-    const letter = canvas.querySelector(id) as HTMLElement;
-    if (letter) {
-      letter.style.left = `${x}px`;
-      letter.style.top = `${y}px`;
-      letter.style.opacity = '1';
-      changeFontColorCss(canvas, id, colors);
-    }
-  };
+      const rect = canvas.getBoundingClientRect();
+      const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
 
-  manager.addListener(canvas, 'mousemove', moveHandler as EventListener);
-  manager.addListener(canvas, 'touchmove', moveHandler as EventListener, { passive: true });
+      const id = `#letter-${String(letterCount).padStart(2, '0')}`;
+      const letter = canvas.querySelector(id) as HTMLElement;
+      if (letter) {
+        letter.style.left = `${x}px`;
+        letter.style.top = `${y}px`;
+        letter.style.opacity = '1';
+        changeFontColorCss(canvas, id, colors);
+      }
+    };
 
-  // Cycle through letters
-  manager.addInterval(() => {
-    letterCount = (letterCount + 1) % allChars.length;
-  }, MOVE_INTERVAL / speed);
+    manager.addListener(canvas, 'mousemove', moveHandler as EventListener);
+    manager.addListener(canvas, 'touchmove', moveHandler as EventListener, { passive: true });
 
-  // Change canvas background
-  manager.addInterval(() => {
-    cssIDGradient(container, '.letter-chase__canvas', colors);
-  }, CANVAS_UPDATE_INTERVAL / speed);
+    manager.addInterval(() => {
+      letterCount = (letterCount + 1) % allChars.length;
+    }, MOVE_INTERVAL / speed);
 
-  manager.watchForRemoval(container);
-  return () => manager.cleanup();
-}
+    manager.addInterval(() => {
+      cssIDGradient(container, '.letter-chase__canvas', colors);
+    }, CANVAS_UPDATE_INTERVAL / speed);
+  },
+});

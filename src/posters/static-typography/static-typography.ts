@@ -1,4 +1,5 @@
-import type { Speaker, PosterConfig, Cleanup } from '../../types/speaker';
+import type { PosterContext } from '../../utilities/poster-scaffold';
+import { definePoster } from '../../utilities/poster-scaffold';
 import { getRandomItem } from '../../utilities/random';
 import './static-typography.css';
 
@@ -9,52 +10,48 @@ function decomposeForLayout(text: string): string[][] {
   const words = text.split(/\s+/).filter(Boolean);
   const rows: string[][] = [];
 
-  // Full text as one character row
   rows.push(text.replace(/\s/g, '').split(''));
 
-  // Per-word character rows
   words.forEach((word) => {
     rows.push(word.split(''));
   });
 
-  // All characters again as closing row
   rows.push(text.replace(/\s/g, '').split(''));
 
   return rows;
 }
 
-export function createStaticTypography(
-  container: HTMLElement,
-  speaker: Speaker,
-  _config?: PosterConfig,
-): Cleanup {
-  container.classList.add('poster', 'static-typography');
+export const createStaticTypography = definePoster({
+  name: 'static-typography',
 
-  const canvas = document.createElement('div');
-  canvas.classList.add('static-typography__canvas');
-  container.appendChild(canvas);
+  build({ container, speaker }: PosterContext) {
+    const canvas = document.createElement('div');
+    canvas.classList.add('static-typography__canvas');
+    container.appendChild(canvas);
 
-  const sourceText = speaker.caption.de || speaker.caption.en || speaker.name;
-  const rows = decomposeForLayout(sourceText);
+    const sourceText = speaker.caption.de || speaker.caption.en || speaker.name;
+    const rows = decomposeForLayout(sourceText);
 
-  rows.forEach((row) => {
-    const rowEl = document.createElement('div');
-    rowEl.classList.add('static-typography__row');
+    rows.forEach((row) => {
+      const rowEl = document.createElement('div');
+      rowEl.classList.add('static-typography__row');
 
-    row.forEach((char) => {
-      const letterEl = document.createElement('div');
-      const cls = getRandomItem(LETTER_CLASSES);
-      letterEl.classList.add('static-typography__letter', cls);
+      row.forEach((char) => {
+        const letterEl = document.createElement('div');
+        const cls = getRandomItem(LETTER_CLASSES);
+        letterEl.classList.add('static-typography__letter', cls);
 
-      const p = document.createElement('p');
-      p.textContent = char;
-      letterEl.appendChild(p);
-      rowEl.appendChild(letterEl);
+        const p = document.createElement('p');
+        p.textContent = char;
+        letterEl.appendChild(p);
+        rowEl.appendChild(letterEl);
+      });
+
+      canvas.appendChild(rowEl);
     });
+  },
 
-    canvas.appendChild(rowEl);
-  });
-
-  // No animation — no cleanup needed
-  return () => {};
-}
+  animate() {
+    // No animation — purely static poster
+  },
+});

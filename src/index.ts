@@ -15,6 +15,10 @@ export { createLetterScatter } from './posters/letter-scatter/letter-scatter';
 export { createPhysicsBlobs } from './posters/physics-blobs/physics-blobs';
 export { createStaticTypography } from './posters/static-typography/static-typography';
 
+// Scaffold
+export { definePoster } from './utilities/poster-scaffold';
+export type { PosterDefinition, PosterContext } from './utilities/poster-scaffold';
+
 // Utilities
 export { getRandomNumber, getRandomInt, getRandomItem, getRandomColor } from './utilities/random';
 export { applyStyle, changeStyle, createElement, queryAll } from './utilities/dom';
