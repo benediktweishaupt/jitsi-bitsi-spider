@@ -92,7 +92,7 @@ async function main() {
   {
     const page = await context.newPage();
     await page.setViewportSize({ width: 1920, height: 1080 });
-    const url = `http://localhost:${port}/iframe.html?id=overview-gallery--all-posters&viewMode=story`;
+    const url = `http://localhost:${port}/iframe.html?id=overview-about--about&viewMode=story`;
     console.log('  Capturing gallery...');
     await page.goto(url, { waitUntil: 'networkidle' });
     await page.waitForTimeout(WAIT_MS);
