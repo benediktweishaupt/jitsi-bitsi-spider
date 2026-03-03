@@ -6,12 +6,15 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "capture": "npx tsx scripts/capture-posters.ts"
   },
   "devDependencies": {
     "@storybook/html-vite": "^10.2.14",
     "esbuild": "^0.27.3",
+    "playwright": "^1.58.2",
     "storybook": "^10.2.14",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   }

@@ -1,34 +1,53 @@
 # Jitsi Bitsi Spider
 
-Generative poster system for a lecture series. You feed it data about a speaker — name, title, date, a few images — and it outputs an animated, interactive poster. Each poster style is a self-contained Svelte component with its own animation logic and visual language.
+Generative poster system for animated typographic posters.
+Same speaker data in, different visual output. 8 poster patterns, 13 speakers.
 
-## The idea
+![Poster Gallery](docs/screenshots/gallery.png)
 
-A lecture series invites different speakers. Each one needs a poster. Instead of designing each poster from scratch, this system lets you pick a style and fill in the data. The styles are designed to be visually distinct — one speaker gets kinetic typography, another gets hover-revealed images, another gets generative grid layouts.
+## Posters
 
-The system is extensible: adding a new poster style means adding one Svelte component and one Storybook story.
+|   |   |   |   |
+| --- | --- | --- | --- |
+| ![TextExplosion](docs/screenshots/text-explosion.png) | ![WordReveal](docs/screenshots/word-reveal.png) | ![LetterGrid](docs/screenshots/letter-grid.png) | ![LetterChase](docs/screenshots/letter-chase.png) |
+| TextExplosion | WordReveal | LetterGrid | LetterChase |
+| ![ScreenFlicker](docs/screenshots/screen-flicker.png) | ![LetterScatter](docs/screenshots/letter-scatter.png) | ![PhysicsBlobs](docs/screenshots/physics-blobs.png) | ![StaticTypography](docs/screenshots/static-typography.png) |
+| ScreenFlicker | LetterScatter | PhysicsBlobs | StaticTypography |
 
-## Current poster styles
+## How it works
 
-- **Jutta Bauer** — Image reveal on hover, layered composition
-- **Studio Moniker** — Kinetic typography, animated text fields
-- **Marco Land** — Large-scale typographic layout with viewport units
-- **Prem Krishnamurthy** — Structured grid with interactive elements
-- **Nontsikelelo Mutiti** — Graphic pattern composition
-- **Stefan Marx** — Illustration-driven, hand-drawn quality
+Every poster is a factory function with the same signature:
+
+```typescript
+import { createLetterGrid } from './posters/letter-grid';
+
+const cleanup = createLetterGrid(container, speaker, {
+  colors: ['black', 'white'],
+  speed: 1.5,
+  intervals: { fast: 800, slow: 6000 },
+  counts: { chunkSize: 4 },
+});
+
+// Later: cleanup() stops all animations and removes DOM
+```
+
+Feed it a container, a speaker, and optional config overrides. It builds DOM, starts animation, and returns a cleanup function.
+
+## Run
+
+```bash
+npm install
+npm run storybook        # localhost:6006
+npm run typecheck        # tsc --noEmit
+npm run build-storybook  # static build
+npm run capture          # generate poster screenshots (requires Playwright)
+```
 
 ## Stack
 
-SvelteKit, Storybook, Tailwind CSS. Each poster component has a corresponding `.stories.svelte` file. The component architecture follows atoms/organisms/posters.
-
-## Run locally
-
-```
-npm install
-npm run dev          # SvelteKit at localhost:5173
-npm run storybook    # Component explorer at localhost:6006
-```
+TypeScript, Storybook 10 (HTML), Vite 6, vanilla CSS (BEM).
+Zero runtime dependencies.
 
 ## Context
 
-Built for "Jitsi Bitsi Spider," a lecture series at Kunsthochschule Weißensee, Berlin (2020). The name is a nod to the nursery rhyme and the Jitsi video calls the lectures happened on — this was early pandemic, before everyone had settled on Zoom.
+Built for "Jitsi Bitsi Spider," a lecture series at Kunsthochschule Weissensee, Berlin (2020). The name is a nod to the nursery rhyme and the Jitsi video calls the lectures happened on.
