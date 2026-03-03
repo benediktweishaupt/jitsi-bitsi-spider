@@ -14,6 +14,17 @@ export function createPhysicsBlobs(
 
   container.classList.add('poster', 'physics-blobs');
 
+  // Speaker name behind the canvas
+  const nameParts = speaker.name.split(/\s+/);
+  const nameEl = document.createElement('div');
+  nameEl.classList.add('physics-blobs__name');
+  nameParts.forEach((part) => {
+    const line = document.createElement('div');
+    line.textContent = part;
+    nameEl.appendChild(line);
+  });
+  container.appendChild(nameEl);
+
   const canvas = document.createElement('canvas');
   canvas.classList.add('physics-blobs__canvas');
   container.appendChild(canvas);
@@ -31,10 +42,11 @@ export function createPhysicsBlobs(
   const observer = new ResizeObserver(resize);
   observer.observe(container);
 
-  // Create blobs
+  // Create blobs — scale radius to container
   const blobs: Blob[] = [];
+  const minDim = Math.min(canvas.width, canvas.height);
   for (let i = 0; i < NUM_BLOBS; i++) {
-    const radius = 30 + Math.random() * 60;
+    const radius = (Math.random() * 60 + 60) * (minDim / 800);
     const pos = randomVec2(canvas.width, canvas.height);
     const vel = scale(vec2(Math.random() - 0.5, Math.random() - 0.5), 6);
     blobs.push(new Blob(radius, pos, vel));

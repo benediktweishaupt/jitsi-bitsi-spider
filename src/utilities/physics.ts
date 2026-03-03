@@ -80,13 +80,18 @@ export class Blob {
   boundOffset: number[];
   boundOffsetBuff: number[];
   sidePoints: Vec2[];
+  fillColor: string;
 
   constructor(radius: number, position: Vec2, velocity: Vec2) {
     this.radius = radius;
     this.point = position;
     this.vector = velocity;
     this.maxVec = 15;
-    this.numSegments = Math.floor(3 + Math.random() * 3);
+    this.numSegments = Math.floor(radius / 3 + 2);
+
+    // Set fill color once (not random per frame)
+    const brightness = Math.floor(Math.random() * 10);
+    this.fillColor = `hsl(0, 0%, ${brightness}%)`;
 
     this.boundOffset = [];
     this.boundOffsetBuff = [];
@@ -155,8 +160,7 @@ export class Blob {
     }
 
     // Draw smooth path
-    const brightness = Math.floor(Math.random() * 10);
-    ctx.fillStyle = `hsl(0, 0%, ${brightness}%)`;
+    ctx.fillStyle = this.fillColor;
     drawSmoothClosedPath(ctx, this.sidePoints);
     ctx.fill();
   }
