@@ -1,0 +1,39 @@
+.screen-flicker {
+  background-color: black;
+  overflow: hidden;
+}
+
+.screen-flicker__stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen-flicker__screen {
+  display: none;
+  font-size: 20vh;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 2vh;
+  word-break: break-word;
+  line-height: 1;
+}
+
+.screen-flicker__screen--selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  animation: flickerAnimation 0.002s infinite;
+}
+
+@keyframes flickerAnimation {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.2; }
+  100% { opacity: 1; }
+}

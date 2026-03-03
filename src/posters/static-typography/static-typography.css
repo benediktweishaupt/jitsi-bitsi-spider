@@ -1,0 +1,58 @@
+.static-typography {
+  background-color: black;
+  overflow: hidden;
+}
+
+.static-typography__canvas {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+.static-typography__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+}
+
+.static-typography__letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 8vh;
+  text-transform: uppercase;
+  overflow: hidden;
+  font-family: 'Cormorant', serif;
+  line-height: 1;
+  transition: all 3600ms linear;
+}
+
+.static-typography__letter--black {
+  background-color: black;
+  color: white;
+}
+
+.static-typography__letter--black:hover {
+  background-color: white;
+  color: black;
+}
+
+.static-typography__letter--white {
+  background-color: white;
+  color: black;
+}
+
+.static-typography__letter--white:hover {
+  background-color: black;
+  color: white;
+}
+
+.static-typography__letter p {
+  margin: 0;
+  line-height: 1;
+  text-shadow: 1px 1px 9px rgba(0, 0, 0, 0.77);
+}

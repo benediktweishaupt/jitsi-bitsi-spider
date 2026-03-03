@@ -1,0 +1,48 @@
+.letter-scatter {
+  background-color: black;
+  overflow: hidden;
+}
+
+.letter-scatter__canvas,
+.letter-scatter__background,
+.letter-scatter__data {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.letter-scatter__background {
+  background-color: black;
+  z-index: 100;
+}
+
+.letter-scatter__background--blur {
+  filter: blur(60px);
+  transition: all 1s linear;
+}
+
+.letter-scatter__data {
+  z-index: 2000;
+  mix-blend-mode: difference;
+}
+
+.letter-scatter__letter {
+  position: absolute;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 55vh;
+  text-transform: uppercase;
+  color: black;
+  mix-blend-mode: difference;
+  margin-left: -25vh;
+  margin-top: -25vh;
+  user-select: none;
+  line-height: 1;
+}
+
+.letter-scatter__letter--color-burn {
+  mix-blend-mode: color-burn;
+  font-family: serif;
+  transition: all 1s ease;
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Jitsi Bitsi Spider #2: Jutta Bauer</title>
+  </head>
+  <body>
+    <div class="wrapper">
+    <div class="mainWrapper">
+      <main class="main">
+      <article class="data jBauerMain">
+        <a href="https://meet.jit.si/Jitsi-Bitsi-Spider" title="" target=„_blank“ >
+          <section class="JBauer">
+          </section>
+
+          <figure class="JBauerImage">
+          </figure>
+
+          <caption>
+            Jutta Bauer
+            <div class="twoLangHover"> 
+            </div>
+            13.5.2020 22:00h(10 p.m.)CET
+          </caption>
+        </a>
+      </article>
+
+    </main>
+  </div> <!-- closing .mainWrapper -->
+
+</div> <!-- closing .wrapper -->
+  </body>
+  <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js" charset="utf-8"></script>
+  <script>
+ 
+    
+    // Generate Text for Jutta Bauer
+    class JBauerAnimation {
+      static COLOR_BASE = 155;
+      static COLOR_RANGE = 100;
+      static DELAY = 600;
+
+      constructor() {
+        this.wordsElement = null;
+        this.imageElement = null;
+        this.wordArray = null;
+        this.animationLength = null;
+        // This ensures that this inside animateWords and animateBackground always refers to the instance of JBauerAnimation, even when these methods are passed as callbacks.
+        this.animateWords = this.animateWords.bind(this);
+        this.animateBackground = this.animateBackground.bind(this);
+      }
+
+      initialize(parameterClass, imageClass, str) {
+        this.wordsElement = document.querySelector(parameterClass);
+        this.imageElement = document.querySelector(imageClass);
+        this.wordArray = str.split(' ');
+        this.animationLength = Math.round((100 / this.wordArray.length) * 100 + Number.EPSILON) / 100;
+
+        this.animateElement(this.wordsElement, this.animateWords);
+        this.animateElement(this.imageElement, this.animateBackground);
+      }
+
+      generateColor() {
+        return `rgb(${Math.floor(Math.random() * JBauerAnimation.COLOR_RANGE + JBauerAnimation.COLOR_BASE)},0,0)`;
+      }
+
+      animateElement(element, action) {
+        let imagePos = 0;
+
+        const requests = this.wordArray.reduce((promiseChain, item, index) => {
+          return promiseChain.then(() => new Promise((resolve) => {
+            setTimeout(() => {
+              action(element, item, imagePos);
+              imagePos += this.animationLength;
+              resolve();
+            }, JBauerAnimation.DELAY * index);
+          }));
+        }, Promise.resolve());
+
+        requests.then(() => console.log('done'));
+      }
+
+      animateWords(element, word, imagePos) {
+        const span = document.createElement('span');
+        span.style.color = this.generateColor();
+        span.textContent = `${word} `;
+        element.appendChild(span);
+      }
+
+      animateBackground(element, word, imagePos) {
+        const posCss = `0% ${imagePos}%`;
+        element.style.backgroundPosition = posCss;
+        element.style.backgroundColor = this.generateColor();
+      }
+    }
+   // ARRAYS FOR JUTTA BAUER
+   const hello = '"Ich bin Jutta Bauer und werde meine Arbeit als Illustratorin und Autorin vorstellen. Ich kann etwas zu meiner Entwicklung sagen und was mir wichtig ist, sowie einige Bücher zeigen und erzählen, wie die Geschichten und die Bilder entstanden sind. Mit was ich mich im Moment beschäftige könnte vielleicht auch interessant sein. Am Ende würde ich gern Raum lassen für Gespräch und Fragen."'
+    const englishWords = 'talks about her books and her project „corona diary“';
+    const germanWords = 'spricht über ihre Bücher und ihr Projekt „corona diary“';
+    
+    const generateTwoLangHover = (englishWords, germanWords) => {
+      const englishWordsArray = englishWords.split(' ');
+      const germanWordsArray = germanWords.split(' ');
+
+      return englishWordsArray.map((word, i) => `
+        <span>
+          <span>${word}</span>
+          <span>${germanWordsArray[i]}</span>
+        </span>
+      `).join('');
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const twoLangHover = document.querySelector('.twoLangHover');
+      twoLangHover.innerHTML = generateTwoLangHover(englishWords, germanWords);
+      const animation = new JBauerAnimation();
+      animation.initialize('.JBauer', '.JBauerImage', hello);
+    });
+
+  </script>
+  <!-- <link rel="stylesheet" href="css/reset.css"> -->
+  <link rel="stylesheet" href="css/master.css">
+
+  <style>
+  
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    background-color: black;
+  }
+  body {
+    overflow: hidden;
+  }
+  aside, nav, header, footer{
+    display: none;
+  }
+  .data {
+    height: 100vh;
+    display: flex;
+    flex-flow: row wrap;
+    color: black;
+    overflow-y: scroll;
+  }
+  .data > *{
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    line-height: 1.2em
+  }
+  .data header{
+    display: flex;
+    color: black;
+    flex: 1 100%;
+  }
+  .data header h1{
+    text-transform: uppercase;
+  }
+
+  .data .captionText {
+    flex: 2;
+  }
+  .data .captionText:lang(de) {
+    font-style: italic;
+  }
+  .data a {
+    font-family: 'Arial', sans-serif;
+    text-decoration: underline;
+  }
+
+  .wrapper {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+  }
+
+  .mainWrapper {
+    display: flex;
+    flex: auto;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-content: space-around;
+  }
+
+  .main {
+    width: 100vw;
+    /* height: 100vw; */
+    height: 100vh;
+    background-color: #f7f7f7;
+    overflow: hidden;
+  }
+
+  .no-display {
+      display: none;
+  }
+  a {
+    color: black;
+  }
+  a:hover {
+    color: red;
+  }
+
+  @media (min-aspect-ratio: 9/10) {
+    .main {
+      flex: 1 100%;
+      /* width: 100vh; */
+      width: 100vw;
+      height: 100vh;
+      max-width: 100%;
+    }
+  }
+  
+  .twoLangHover span { color: green }
+  .twoLangHover span>span:first-child { display: none }
+  .twoLangHover span:hover>span:first-child { display: inline; }
+  .twoLangHover span:hover>span:nth-child(2) { display: none; }
+
+  figure {
+    margin: 0;
+    padding: 0;
+    height: 40vh;
+    width: 100vw;
+    background-color: red;
+    background-image: url('img/jutta-bauer/jutta-bauer-01.png');
+    background-blend-mode: screen;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    transition: background-position 600ms linear;
+  }
+  section {
+    height: 40vh;
+    /* position: absolute; */
+    /* top: 0; */
+    padding-top: 0;
+    margin-top: 0;
+    /* font-family: 'Parisienne', cursive; */
+    font-weight: 100;
+    letter-spacing: 0.04em;
+    line-height: 1.2em
+  }
+  section span {
+    color: red;
+        -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+           -moz-animation: fadein 2s; /* Firefox < 16 */
+            -ms-animation: fadein 2s; /* Internet Explorer */
+             -o-animation: fadein 2s; /* Opera < 12.1 */
+                animation: fadein 2s;
+  }
+  @keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+  }
+  /* Firefox < 16 */
+  @-moz-keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+  }
+
+  /* Safari, Chrome and Opera > 12.1 */
+  @-webkit-keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+  }
+
+  </style>
+</html>

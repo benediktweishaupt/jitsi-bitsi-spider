@@ -1,0 +1,10 @@
+.physics-blobs {
+  background-color: black;
+  overflow: hidden;
+}
+
+.physics-blobs__canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

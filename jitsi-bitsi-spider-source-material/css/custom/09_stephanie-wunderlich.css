@@ -1,0 +1,39 @@
+.mainWrapper {
+}
+#canvas,
+#background,
+.data {
+  position: absolute;
+  top:0;
+  left:0;
+  background-color: transparent;
+  min-height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+
+}
+#background {
+  background-color: black;
+  z-index: 100;
+  filter: blur(60px);
+  transition: all 1s linear;
+}
+.data {
+  z-index: 2000;
+  mix-blend-mode: difference;
+
+}
+.letter {
+  left: 0;
+  top: 0;
+  transition: all 1s ease;
+  font-family: serif;
+  font-size: 55vh;
+  position: absolute;
+  text-transform: uppercase;
+  /* background-color: red; */
+  color: black;
+  mix-blend-mode: color-burn;
+  margin-top: -25vh;
+  margin-left: -25vh;
+}

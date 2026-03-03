@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Jitsi Bitsi Spider #6: Prem Krishnamurthy</title>
+	</head>
+	<body>
+		<div class="wrapper">
+
+		<div class="mainWrapper">
+			<main class="main">
+
+					<article id="canvas">
+
+							<div class="itemWrapper letterRow">
+								<div class="singleLetter letter"><p>P</p></div>
+								<div class="singleLetter letter"><p>r</p></div>
+								<div class="singleLetter letter"><p>e</p></div>
+								<div class="singleLetter letter"><p>m</p></div>
+							</div>
+
+							<div class="itemWrapper letterRow">
+								<div class="singleLetter letter"><p>K</p></div>
+								<div class="singleLetter letter"><p>r</p></div>
+								<div class="singleLetter letter"><p>i</p></div>
+								<div class="singleLetter letter"><p>s</p></div>
+								<div class="singleLetter letter"><p>h</p></div>
+								<div class="singleLetter letter"><p>n</p></div>
+								<div class="singleLetter letter"><p>a</p></div>
+								<div class="singleLetter letter"><p>m</p></div>
+								<div class="singleLetter letter"><p>u</p></div>
+								<div class="singleLetter letter"><p>r</p></div>
+								<div class="singleLetter letter"><p>t</p></div>
+								<div class="singleLetter letter"><p>h</p></div>
+								<div class="singleLetter letter"><p>y</p></div>
+							</div>
+
+				</article> <!-- canvas end -->
+
+
+				<article class="data prem no-display">
+
+					<header>
+
+						<hgroup lang="en de">
+							<h2 class="editionNumber" edition="4">jitsi bitsi spider #6:</h2>
+							<time datetime="2020-07-01T22:00:00+02:00" pubdate>
+								Wednesday, the 28th of October at 20:00 (10 p.m.) CET
+							</time>
+							<h1 class="name">Prem Krishnamurthy</h1>
+						</hgroup>
+
+						<a href="https://www.crowdcast.io/e/lecture-06--prem" title="Link to the jitsi meeting room" class="link meetingroom" target="_blank">Link to the Lecture</a>
+
+					</header>
+
+					<figure class="image">
+					</figure>
+					<figcaption class="captionText" lang="en">
+						 ... talks about his work, publications and cooperations.
+					</figcaption>
+
+					<figcaption class="captionText" lang="de">
+						... spricht über seine Arbeit, Publikationen und Kooperationen.
+					</figcaption>
+
+					<section class="shortBio" lang="en">
+						<p class="textBio">
+						</p>
+						<p class="linkBio">
+							Partner and Director, <a href="http://wkshps.com/" class="link" target="_blank">Wkshps</a><br>
+							Artistic Director, <a href="http://2022.frontart.org/" class="link" target="_blank">FRONT International 2022</a><br>
+							Organizer, <a href="https://docs.google.com/document/d/1Ri6_qgc7PfdeomBSOS1ElIHe09V8RoF9Cv7hMZZh_oM/edit" class="link" target="_blank">Commune</a>
+						</p>
+					</section>
+
+				</article>
+
+			</main>
+		</div> <!-- closing .mainWrapper -->
+
+	</div>
+
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="js/functions.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/script.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	// ARRAYS FOR PREM
+const classNames = ['singleLetter--black']
+const borderRadius = ['100%', '100%', '100%', '0', '0', '0', '0'];
+
+document.addEventListener('DOMContentLoaded', () => {
+  // CALL Prem
+  // let prefix = getCssValuePrefix();
+  
+  setInterval( function() {
+    changeFlex('.singleLetter', 200);
+    changeFlex('.letterRow', 100);
+    changeFontSize('.singleLetter', 10, 100);
+    changeBorderRadius('.singleLetter', borderRadius);
+  }, 1000);
+  
+  setInterval( function() {
+    changeBorderRadius('.singleLetter', borderRadius);
+  }, 3000);
+  
+  changeFlex('.singleLetter', 200);
+  changeFlex('.letterRow', 20);
+  changeClass('.singleLetter', classNames);
+  changeBorderRadius('.singleLetter', borderRadius);
+  // END: CALL
+});
+</script>
+	<link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/master.css">
+
+  <style>
+	 #canvas {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    height: 100vh;
+    background-color: black;
+  }
+
+  .letterRow {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      flex: 1;
+      min-width: 710px;
+      /* mix-blend-mode: difference; */
+  }
+
+  .singleLetter {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: space-evenly;
+      font-size: 22vh;
+      overflow: hidden;
+  }
+  .singleLetter p {
+    font-family: Arial;
+    text-transform: uppercase;
+  }
+  .letterRow:hover{
+    flex: 1 1 200px !important;
+    cursor: pointer;
+  }
+  .singleLetter:hover{
+    flex: 1 1 400px !important;
+  }
+
+  .singleLetter--black,
+  .singleLetter--white:hover {
+    background-color: white;
+    color: black;
+  }
+  .singleLetter--white,
+  .singleLetter--black:hover {
+    background-color: black;
+    color: white;
+  }
+  p {
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    line-height: 1;
+  }
+  .singleLetter,
+  .itemWrapper {
+    transition: all 800ms linear;
+  }
+  .singleLetter p{
+      padding: 0;
+      line-height: 0;
+  }
+  </style>
+</html>

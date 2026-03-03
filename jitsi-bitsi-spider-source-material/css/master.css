@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Parisienne&display=swap');
+
+/* @import "custom/05_stefan-marx.css"; */
+/* @import "custom/06_prem.css"; */
+/* @import "custom/07_lukas-feireis.css"; */
+/* @import "custom/09_stephanie-wunderlich.css"; */
+/* @import "custom/11_emily-smith.css"; */
+/* @import "custom/13_wenzel-schwaerzler.css"; */
+
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    background-color: black;
+  }
+  body {
+    overflow: hidden;
+  }
+  aside, nav, header, footer{
+    display: none;
+  }
+  .data {
+    height: 100vh;
+    display: flex;
+    flex-flow: row wrap;
+    color: black;
+    overflow-y: scroll;
+  }
+  .data > *{
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    line-height: 1.2em
+  }
+  .data header{
+    display: flex;
+    color: black;
+    flex: 1 100%;
+  }
+  .data header h1{
+    text-transform: uppercase;
+  }
+
+  .data .captionText {
+    flex: 2;
+  }
+  .data .captionText:lang(de) {
+    font-style: italic;
+  }
+  .data a {
+    font-family: 'Arial', sans-serif;
+    text-decoration: underline;
+  }
+
+  .wrapper {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+  }
+
+  .mainWrapper {
+    display: flex;
+    flex: auto;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-content: space-around;
+  }
+
+  .main {
+    width: 100vw;
+    /* height: 100vw; */
+    height: 100vh;
+    background-color: #f7f7f7;
+    overflow: hidden;
+  }
+
+  .no-display {
+      display: none;
+  }
+  a {
+    color: black;
+  }
+  a:hover {
+    color: red;
+  }
+
+  @media (min-aspect-ratio: 9/10) {
+    .main {
+      flex: 1 100%;
+      /* width: 100vh; */
+      width: 100vw;
+      height: 100vh;
+      max-width: 100%;
+    }
+  }

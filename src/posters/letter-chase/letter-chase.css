@@ -1,0 +1,26 @@
+.letter-chase {
+  background-color: #1e293b;
+  cursor: crosshair;
+}
+
+.letter-chase__canvas {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.letter-chase__letter {
+  position: absolute;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 55vh;
+  text-transform: uppercase;
+  color: blue;
+  mix-blend-mode: difference;
+  opacity: 0;
+  margin-left: -25vh;
+  margin-top: -25vh;
+  pointer-events: none;
+  transition: color 0.3s ease;
+  user-select: none;
+}

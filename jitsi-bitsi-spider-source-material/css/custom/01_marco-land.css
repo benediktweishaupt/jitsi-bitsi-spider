@@ -1,0 +1,27 @@
+/* style Marco Land */
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+hr {
+  border-width: 0;
+  border-top-width: 20px;
+}
+body {
+  -moz-transition: all 0.01s linear;
+  -o-transition: all 0.01s linear;
+  -webkit-transition: all 0.01s linear;
+  transition: all 0.01s linear;
+}
+.main * {
+  display: block;
+  overflow: auto;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+.arya {
+  font-family: 'Arial', sans-serif;
+}

@@ -1,0 +1,66 @@
+.letter-grid {
+  background-color: black;
+  overflow: hidden;
+}
+
+.letter-grid__canvas {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: 0% 0%;
+}
+
+@keyframes bgpos {
+  0%   { background-position: 0% 0%; }
+  25%  { background-position: 0% 100%; }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position: 100% 0%; }
+  100% { background-position: 0% 0%; }
+}
+
+.letter-grid__canvas--animated-bg {
+  animation: bgpos 64s linear infinite;
+  filter: blur(1px);
+}
+
+.letter-grid__row {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  mix-blend-mode: difference;
+  backdrop-filter: blur(10px);
+}
+
+.letter-grid__letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 22vh;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: all 8s linear;
+}
+
+.letter-grid__letter--black {
+  background-color: black;
+  color: white;
+}
+
+.letter-grid__letter--black:hover {
+  background-color: white;
+  color: black;
+}
+
+.letter-grid__letter--white {
+  background-color: white;
+  color: black;
+}
+
+.letter-grid__letter--white:hover {
+  background-color: black;
+  color: white;
+}

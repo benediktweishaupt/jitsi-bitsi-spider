@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- <title>Jitsi Bitsi Spider #1: Marco Land</title> -->
+    <!-- <title>Jitsi Bitsi Spider #2: Jutta Bauer</title> -->
+    <!-- <title>Jitsi Bitsi Spider #3: Nontsikelelo Mutiti</title> -->
+    <!-- <title>Jitsi Bitsi Spider #4: Studio Moniker</title> -->
+  </head>
+  <body>
+    <div class="wrapper">
+    <div class="mainWrapper">
+      <main class="main">
+
+        <article id="canvas">
+
+            <div class="itemWrapper letterRow">
+              <div class="singleLetter letter"><p>N</p></div>
+              <div class="singleLetter letter"><p>o</p></div>
+              <div class="singleLetter letter"><p>n</p></div>
+              <div class="singleLetter letter"><p>t</p></div>
+              <div class="singleLetter letter"><p>s</p></div>
+            </div>
+
+            <div class="itemWrapper letterRow">
+              <div class="singleLetter letter"><p>i</p></div>
+              <div class="singleLetter letter"><p>k</p></div>
+              <div class="singleLetter letter"><p>e</p></div>
+              <div class="singleLetter letter"><p>l</p></div>
+              <div class="singleLetter letter"><p>e</p></div>
+            </div>
+
+            <div class="itemWrapper letterRow">
+              <div class="singleLetter letter"><p>l</p></div>
+              <div class="singleLetter letter"><p>o</p></div>
+              <div class="singleLetter letter"><p></p></div>
+              <div class="singleLetter letter"><p></p></div>
+              <div class="singleLetter letter"><p></p></div>
+            </div>
+
+            <div class="itemWrapper letterRow">
+              <div class="singleLetter letter"><p></p></div>
+              <div class="singleLetter letter"><p></p></div>
+              <div class="singleLetter letter"><p>M</p></div>
+              <div class="singleLetter letter"><p>u</p></div>
+              <div class="singleLetter letter"><p>t</p></div>
+            </div>
+
+            <div class="itemWrapper letterRow">
+
+              <div class="singleLetter letter"><p>i</p></div>
+              <div class="singleLetter letter"><p>t</p></div>
+              <div class="singleLetter letter"><p>i</p></div>
+              <div class="singleLetter letter"><p></p></div>
+              <div class="singleLetter letter"><p></p></div>
+
+            </div>
+
+      </article> <!-- canvas end -->
+
+
+
+    </main>
+    <aside class="aside aside-1">Aside 1</aside>
+    <aside class="aside aside-2">Aside 2</aside>
+  </div> <!-- closing .mainWrapper -->
+
+  <footer class="footer">footer</footer>
+  </div>
+  </body>
+  <!-- <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js" charset="utf-8"></script> -->
+  <script src="node_modules/dom-to-image/dist/dom-to-image.min.js" charset="utf-8"></script>
+  <script src="./js/functions.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    // ARRAYS FOR Nontsikelelo Mutiti
+    const classNames = ['singleLetter--white', 'singleLetter--black']
+    const colors = ['black', 'white'];
+    const borderRadius = ['25vw', '25vw', '25vw', '0', '0', '0', '0', '0', '0'];
+
+    // Classes for Nontsikelelo Mutiti
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // let prefix = getCssValuePrefix();
+      
+      setInterval( function() {
+        // changeFontSize('.singleLetter', 10);
+        changeFlex('.singleLetter', 200);
+        changeFlex('.letterRow', 100);
+        changeClass('.singleLetter', classNames);
+        cssGradients('.singleLetter', colors);
+        cssGradients('.letterRow', colors);
+      }, 1000);
+      
+      setInterval( function() {
+        changeFontSize('.singleLetter', 1, 40);
+        changeBorderRadius('.singleLetter', borderRadius);
+      }, 8000);
+      
+      changeFlex('.singleLetter', 400);
+      changeFlex('.letterRow', 100);
+      changeFontSize('.singleLetter', 10);
+      changeClass('.singleLetter', classNames);
+      changeBorderRadius('.singleLetter', borderRadius);
+      cssGradients('.singleLetter', colors);
+      cssGradients('.letterRow', colors);
+    });
+  </script>
+  <link rel="stylesheet" href="css/reset.css">
+
+  <link rel="stylesheet" href="css/master.css">
+  <style>
+
+  /* Style Overrides N. Mutiti */
+  #canvas {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    height: 100vh;
+    background-image: url('img/nontsikelelo-mutiti/background.png');
+    /* background-size: contain; */
+    filter: blur(1px);
+    -webkit-animation: bgpos 64s linear 0s infinite; /* Safari 4+ */
+    -moz-animation:    bgpos 64s linear 0s infinite; /* Fx 5+ */
+    -o-animation:      bgpos 64s linear 0s infinite; /* Opera 12+ */
+    animation:         bgpos 64s linear 0s infinite; /* IE 10+, Fx 29+ */
+  }
+  @-webkit-keyframes bgpos {
+    0%   { background-position: 0% 0%; }
+    25% { background-position: 0% 100%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 100% 0%; }
+    100% { background-position: 0% 0%; }
+  }
+  .letterRow {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      flex: 1;
+      min-width: 710px;
+      mix-blend-mode: difference;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+  }
+
+  .singleLetter {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: space-evenly;
+      font-size: 22vh;
+      overflow: hidden;
+  }
+  .singleLetter p {
+    font-family: Arial;
+    text-transform: uppercase;
+  }
+  .letterRow:hover{
+    flex: 1 1 200px !important;
+    cursor: pointer;
+  }
+  .singleLetter:hover{
+    flex: 1 1 400px !important;
+  }
+
+  .singleLetter--black,
+  .singleLetter--white:hover {
+    background-color: white;
+    color: black;
+  }
+  .singleLetter--white,
+  .singleLetter--black:hover {
+    background-color: black;
+    color: white;
+  }
+  p {
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    line-height: 1;
+  }
+  .singleLetter,
+  .itemWrapper {
+    transition: all 8s linear;
+  }
+
+  </style>
+</html>

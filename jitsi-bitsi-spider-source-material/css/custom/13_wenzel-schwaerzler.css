@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Arapey:ital@1&family=Charm&family=Cormorant:ital,wght@1,300&family=DM+Sans&family=Italianno&family=La+Belle+Aurore&family=Lato&family=Old+Standard+TT:ital@1&family=Parisienne&family=Poppins:wght@100&display=swap');
+  /* Style Overrides N. Mutiti */
+  #canvas {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    height: 100vh;
+  }
+
+  .letterRow {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      flex: 1;
+      min-width: 710px;
+  }
+
+  .singleLetter {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: space-evenly;
+      font-size: 8vh;
+      overflow: inherit;
+
+  }
+  .singleLetter p {
+    /* font-family: Arial; */
+    text-transform: uppercase;
+    color: white
+    /* mix-blend-mode: screen; */
+
+  }
+  /* .letterRow:hover{
+    flex: 1 1 200px !important;
+    cursor: pointer;
+  }
+  .singleLetter:hover{
+    flex: 1 1 400px !important;
+  } */
+
+  .singleLetter--black,
+  .singleLetter--white:hover {
+    background-color: white;
+    color: black;
+  }
+  .singleLetter--white,
+  .singleLetter--black:hover {
+    background-color: black;
+    color: white;
+  }
+  p {
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    line-height: 1;
+  }
+  .singleLetter, .letterRow,
+  .itemWrapper {
+    transition: all 3600ms linear;
+  }
+  .singleLetter p {
+      padding: 0;
+      line-height: 0;
+      text-shadow: 1px 1px 9px rgba(0, 0, 0, 0.77);
+  }

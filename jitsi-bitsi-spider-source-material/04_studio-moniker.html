@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Jitsi Bitsi Spider #4: Studio Moniker</title>
+  </head>
+
+  <body>
+
+    <div class="wrapper">
+
+    <div class="mainWrapper">
+      <main class="main">
+
+        <article id="canvas" class="canvas">
+
+          <div class="letter" id="letter-01"><p>M</p></div>
+          <div class="letter" id="letter-02"><p>o</p></div>
+          <div class="letter" id="letter-03"><p>n</p></div>
+          <div class="letter" id="letter-04"><p>i</p></div>
+          <div class="letter" id="letter-05"><p>k</p></div>
+          <div class="letter" id="letter-06"><p>e</p></div>
+          <div class="letter" id="letter-07"><p>r</p></div>
+          <div class="letter" id="letter-08"><p>&#9632;</p></div>
+          <div class="letter" id="letter-09"><p>&#9679;</p></div>
+          <div class="letter" id="letter-00"><p>&#9650;</p></div>
+
+        </article> <!-- canvas end -->
+
+        
+
+      </main>
+
+    </div> <!-- closing .mainWrapper -->
+
+    <footer class="footer">footer</footer>
+  </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js" charset="utf-8"></script>
+  <script src="js/functions.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="js/script.js" type="text/javascript" charset="utf-8"></script> -->
+  <script>
+    // Arrays for Moniker
+class LetterMover {
+  constructor() {
+    this.MOVE_INTERVAL = 1500;
+    this.CANVAS_UPDATE_INTERVAL = 4000;
+    this.MAX_LETTER_COUNT = 9;
+    this.fewColors = ['red', 'blue', 'green', 'black', 'white'];
+    this.letterCount = 1;
+    this.letterID = `#letter-0${this.letterCount}`;
+  }
+
+  moveHandler(e) {
+    const { pageX: x, pageY: y } = e;
+    const letter = document.querySelector(this.letterID);
+    if (letter) {
+      letter.style.cssText = `top: ${y}px; left: ${x}px; opacity: 1`;
+      changeFontColorCss(this.letterID, this.fewColors);
+    }
+  }
+
+  updateLetterCount() {
+    document.removeEventListener('mousemove', this.moveHandler.bind(this));
+    this.letterCount = this.letterCount < this.MAX_LETTER_COUNT ? this.letterCount + 1 : 0;
+    this.letterID = `#letter-0${this.letterCount}`;
+    setTimeout(() => document.addEventListener('mousemove', this.moveHandler.bind(this)), 200);
+  }
+
+  updateCanvas() {
+    const canvas = document.querySelector('#canvas');
+    if (canvas) {
+      cssIDGradient('.canvas', this.fewColors);
+    } else {
+      console.error('No element with the class "canvas" found');
+    }
+  }
+
+  initialize() {
+    this.updateCanvas.bind(this)
+    document.querySelectorAll(".letter").forEach(element => element.style.opacity = 0);
+    document.addEventListener('mousemove', this.moveHandler.bind(this));
+    setInterval(this.updateLetterCount.bind(this), this.MOVE_INTERVAL);
+    setInterval(this.updateCanvas.bind(this), this.CANVAS_UPDATE_INTERVAL);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const letterMover = new LetterMover();
+  letterMover.initialize();
+});
+  </script>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/master.css">
+  <style>
+    #canvas {
+  /* background-color: black; */
+  height: 100%;
+  transition: 2s linear;
+}
+.letter {
+  font-family: Arial Black;
+  font-size: 55vh;
+  position: absolute;
+  text-transform: uppercase;
+  /* background-color: red; */
+  color: blue;
+  mix-blend-mode: difference;
+  margin-top: -25vh;
+  margin-left: -25vh;
+}
+
+  </style>
+</html>

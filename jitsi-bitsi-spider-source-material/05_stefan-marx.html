@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Jitsi Bitsi Spider #5: Stefan Marx</title>
+  </head>
+  <body>
+    <div class="wrapper">
+
+    <div class="mainWrapper">
+      <main class="main">
+
+        <a id="canvas" class="canvas" href="https://www.crowdcast.io/e/jitsi-bitsi-spider-5">
+          <div class="slider">
+            <div class="screen screen-1">jitsi bitsi spider #5</div>
+            <div class="screen screen-2">Stefan Marx</div>
+            <div class="screen screen-3">next Wednesday</div>
+            <div class="screen screen-4">Stefan Marx</div>
+            <div class="screen screen-5">1st of July</div>
+            <div class="screen screen-6">Stefan Marx</div>
+            <div class="screen screen-7">    22:00    </div>
+            <div class="screen screen-8">Stefan Marx</div>
+            <div class="screen screen-9">about his</div>
+            <div class="screen screen-10">Stefan Marx</div>
+            <div class="screen screen-11">drawing work</div>
+            <div class="screen screen-12">Stefan Marx</div>
+            <div class="screen screen-13">about his</div>
+            <div class="screen screen-14 ">Stefan Marx</div>
+            <div class="screen screen-15">publications</div>
+            <div class="screen screen-16">Stefan Marx</div>
+            <div class="screen screen-17">about his</div>
+            <div class="screen screen-18">Stefan Marx</div>
+            <div class="screen screen-19">cooperations</div>
+            <div class="screen screen-20">Stefan Marx</div>
+            <div class="screen screen-21">E n t e r</div>
+            <div class="screen screen-22">Stefan Marx</div>
+            <div class="screen screen-23">next Wednesday</div>
+            <div class="screen screen-24">Stefan Marx</div>
+            <div class="screen screen-25">1st of July</div>
+          </div>
+        </a> <!-- canvas end -->
+
+        <article class="data stefanMarx no-display">
+
+          <header>
+
+            <hgroup lang="en de">
+              <h2 class="editionNumber" edition="4">jitsi bitsi spider #5:</h2>
+              <time datetime="2020-07-01T22:00:00+02:00" pubdate>
+                Wednesday, the 1st of July at 22:00 (10 p.m.) CET
+              </time>
+              <h1 class="name">Stefan Marx</h1>
+            </hgroup>
+
+            <a href="https://meet.jit.si/Jitsi-Bitsi-Spider" title="Link to the jitsi meeting room" class="link meetingroom" target="_blank"></a>
+
+          </header>
+
+          <figure class="image">
+            <img src="img/moniker/moniker-02.png" alt="">
+          </figure>
+          <figcaption class="captionText" lang="en">
+             ... talks about his drawing work, his publications and cooperations.
+          </figcaption>
+
+          <figcaption class="captionText" lang="de">
+            ... spricht über seine zeichnerische Arbeit, seine Publikationen und Kooperationen.
+          </figcaption>
+
+          <section class="shortBio" lang="en">
+            <p class="textBio">
+            </p>
+            <p class="linkBio">
+              <a href="https://www.s-marx.de/"  title="Website of Stefan Marx" class="link meetingroom" target="_blank"> Visit his website: Stefan Marx</a>
+            </p>
+          </section>
+
+        </article>
+
+      </main>
+
+    </div> <!-- closing .mainWrapper -->
+
+  </div>
+  </body>
+  <script src="js/functions.js" type="text/javascript" charset="utf-8"></script>
+
+  <script>
+
+class ScreenUpdater {
+  constructor() {
+    this.colors = ['#16a085', '#27ae60', '#2c3e50', '#f39c12', '#e74c3c', '#9b59b6', '#FB6964', '#342224', "#472E32", "#BDBB99", "#77B1A9", "#73A857", 'red', 'yellow'];
+    this.aragFONT = ['Archivo Black', 'Bangers', 'Bungee Inline', 'Ceviche One', 'Cinzel Decorative', 'Faster One', 'Fontdiner Swanky', 'Hanalei', 'Knewave', 'Kumar One Outline', 'Monoton', 'MuseoModerno', 'Notable', 'Piedra', 'Shrikhand', 'Spartan', 'UnifrakturMaguntia'];
+    this.SCREEN_CLASS = '.screen';
+    this.SELECTED_CLASS = '.selected';
+    this.INTERVAL_MS = 500;
+  }
+  // Copied from functions.js
+  getRandomItem = (array) => array[getRandomNumber(array.length)];
+  getRandomNumber = (max) => Math.floor(Math.random() * max);
+  getRandomNumberPx = (max) => `${getRandomNumber(max)}px`;
+
+  getActiveClass(i, screens) {
+    return `${this.SCREEN_CLASS}-${i % screens.length}`;
+  }
+
+  removeSelectedClass(selectedElement) {
+    if (selectedElement) {
+      selectedElement.classList.remove(this.SELECTED_CLASS.slice(1));
+    }
+  }
+
+  addSelectedClass(activeElement) {
+    if (activeElement) {
+      activeElement.classList.add(this.SELECTED_CLASS.slice(1));
+    }
+  }
+  
+
+  updateElementStyle(activeElement, i) {
+    const textLength = activeElement.textContent.length;
+    const idealFontSize = Math.round(100 / (textLength ** 2) * 20);
+
+    if (i % 2 !== 1) {
+      const fontFamily = this.getRandomItem(this.aragFONT);
+      const shadowParams1 = [this.getRandomNumberPx(10), this.getRandomNumberPx(10), this.getRandomNumberPx(40), this.getRandomItem(this.colors)].join(" ");
+      const shadowParams2 = [this.getRandomNumberPx(10), this.getRandomNumberPx(10), this.getRandomNumberPx(40), this.getRandomItem(this.colors)].join(" ");
+
+      activeElement.style.fontSize = `${idealFontSize}vh`;
+      activeElement.style.fontFamily = fontFamily;
+      activeElement.style.textShadow = `${shadowParams1}, ${shadowParams2}`;
+    } else {
+      activeElement.style.fontSize = `${idealFontSize}vh`;
+    }
+  }
+
+  updateScreen() {
+    let i = 1;
+    setInterval(() => {
+      const screens = document.querySelectorAll(this.SCREEN_CLASS);
+      const activeClass = this.getActiveClass(i, screens);
+
+      this.removeSelectedClass(document.querySelector(this.SELECTED_CLASS));
+
+      const activeElement = document.querySelector(activeClass);
+      this.addSelectedClass(activeElement);
+
+      changeFontColorCss(this.SELECTED_CLASS, this.colors);
+
+      if (activeElement) {
+        this.updateElementStyle(activeElement, i);
+      }
+
+      i += 1;
+    }, this.INTERVAL_MS);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const screenUpdater = new ScreenUpdater();
+  screenUpdater.updateScreen();
+});
+  </script>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/master.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Bungee+Inline&family=Ceviche+One&family=Cinzel+Decorative&family=Faster+One&family=Fontdiner+Swanky&family=Hanalei&family=Knewave&family=Kumar+One+Outline&family=Monoton&family=MuseoModerno:wght@900&family=Notable&family=Piedra&family=Shrikhand&family=Spartan:wght@100&family=UnifrakturMaguntia&display=swap');
+
+
+
+.canvas {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background-color: black;
+}
+
+.screen {
+  display: none;
+  text-align: center;
+  font-family: impact;
+  text-transform: uppercase;
+  font-size: 20vh;
+  color: white;
+  line-height: 0.9;
+  -webkit-animation: flickerAnimation 2ms infinite;
+  -moz-animation: flickerAnimation 2ms infinite;
+  -o-animation: flickerAnimation 2ms infinite;
+   animation: flickerAnimation 2ms infinite;
+}
+
+.selected {
+    display: block;
+}
+
+@keyframes flickerAnimation {
+  0%   { opacity:1; }
+  50%  { opacity:0.2; }
+  100% { opacity:1; }
+}
+@-o-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0.2; }
+  100% { opacity:1; }
+}
+@-moz-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0.2; }
+  100% { opacity:1; }
+}
+@-webkit-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0.2; }
+  100% { opacity:1; }
+}
+
+  </style>
+</html>

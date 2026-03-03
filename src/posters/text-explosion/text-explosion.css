@@ -1,0 +1,28 @@
+.text-explosion {
+  background-color: #f7f7f7;
+  transition: all 0.01s linear;
+}
+
+.text-explosion * {
+  display: block;
+  overflow: auto;
+}
+
+.text-explosion__content {
+  display: flex;
+  flex-flow: row wrap;
+  height: 100vh;
+  overflow-y: scroll;
+  letter-spacing: 0.02em;
+  line-height: 1.2em;
+  font-family: Arial, sans-serif;
+}
+
+.text-explosion__content > * {
+  font-size: 30px;
+  padding: 0.2em;
+}
+
+.text-explosion hr {
+  border-top-width: 20px;
+}
