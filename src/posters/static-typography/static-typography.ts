@@ -4,18 +4,21 @@ import './static-typography.css';
 
 const LETTER_CLASSES = ['static-typography__letter--black', 'static-typography__letter--white'] as const;
 
-/** Decompose a name into rows of individual characters for typographic display */
-function decomposeForLayout(name: string): string[][] {
-  const words = name.split(/\s+/);
+/** Decompose text into rows of individual characters for typographic display */
+function decomposeForLayout(text: string): string[][] {
+  const words = text.split(/\s+/).filter(Boolean);
   const rows: string[][] = [];
 
-  // Row per word, characters split individually
+  // Full text as one character row
+  rows.push(text.replace(/\s/g, '').split(''));
+
+  // Per-word character rows
   words.forEach((word) => {
     rows.push(word.split(''));
   });
 
-  // Add a combined row with all characters
-  rows.push(name.replace(/\s/g, '').split(''));
+  // All characters again as closing row
+  rows.push(text.replace(/\s/g, '').split(''));
 
   return rows;
 }
@@ -31,7 +34,8 @@ export function createStaticTypography(
   canvas.classList.add('static-typography__canvas');
   container.appendChild(canvas);
 
-  const rows = decomposeForLayout(speaker.name);
+  const sourceText = speaker.caption.de || speaker.caption.en || speaker.name;
+  const rows = decomposeForLayout(sourceText);
 
   rows.forEach((row) => {
     const rowEl = document.createElement('div');
