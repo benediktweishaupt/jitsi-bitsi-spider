@@ -3,11 +3,11 @@ import type { Speaker } from '../../types/speaker';
 import { createStaticTypography } from './static-typography';
 import { speakers } from '../../data/speakers';
 
-interface StaticTypographyArgs {
+interface Args {
   speaker: Speaker;
 }
 
-const meta: Meta<StaticTypographyArgs> = {
+const meta: Meta<Args> = {
   title: 'Posters/StaticTypography',
   argTypes: {
     speaker: {
@@ -17,7 +17,7 @@ const meta: Meta<StaticTypographyArgs> = {
     },
   },
   args: {
-    speaker: speakers[12], // J. Wenzel & W. Schwärzler
+    speaker: speakers[12],
   },
   render: (args) => {
     const container = document.createElement('div');
@@ -28,6 +28,14 @@ const meta: Meta<StaticTypographyArgs> = {
 };
 
 export default meta;
-type Story = StoryObj<StaticTypographyArgs>;
+type Story = StoryObj<Args>;
 
 export const Default: Story = {};
+
+export const ShortName: Story = {
+  args: { speaker: speakers[1] },
+};
+
+export const LongName: Story = {
+  args: { speaker: speakers[2] },
+};
