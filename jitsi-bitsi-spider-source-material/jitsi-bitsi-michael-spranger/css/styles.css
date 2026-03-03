@@ -1,0 +1,301 @@
+body {
+   overflow: hidden;
+   font: 16px/20px times, serif;
+   letter-spacing: 0.05em;
+}
+h1,h2,h3,h4,h5,h6,p {
+  font-size: 7.5vh;
+  line-height: 8vh;
+}
+a:hover {
+  cursor: pointer;
+}
+#contentBox {
+  display: none;
+  height: 0px;
+  width: 0px;
+}
+#wrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+/*genreal placing boxes*/
+article {
+  opacity:0;
+  transform: scale(0.2);
+  z-index: -100;
+  transition: 0.3s;
+}
+.latestblock {
+  top:0;
+  left: 0;
+  position: absolute;
+  overflow: none;
+  display: block;
+  /* background-color: none; */
+  /* box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3); */
+  transform: scale(0.5);
+  transition: 1s;
+}
+
+/*general animation Boxes*/
+article.before,
+article.after,
+article.active {
+  display: block;
+}
+/*Before animation*/
+.before {
+  opacity: 1;
+  transform: scale(0.5);
+  z-index: -100;
+}
+.before .latestblock {
+    transform: scale(0.5);
+    /* letter-spacing: 10em; */
+}
+/*active (middle) animation*/
+.active {
+  opacity: 1;
+  z-index: 0;
+  transform: scale(1);
+}
+.active .latestblock {
+    transform: scale(1);
+}
+/*after animation*/
+.after {
+  opacity: 0;
+  z-index: 100;
+  transform: scale(2);
+}
+.after .latestblock {
+  transform: scale(2);
+  /* letter-spacing: 10em; */
+
+}
+
+
+/*Meta informations*/
+header, footer {
+  height: 0px;
+}
+header section,
+footer section {
+   position:absolute;
+   z-index: 1030;
+}
+
+.logo {
+  font: bold italic 50px/50px helvetica, arial, sans-serif;
+  top: 0;
+  right: 0;
+  margin: 10px 25px 0 0;
+  padding: 0 11px 0 7px;
+  letter-spacing: -0.06em;
+  overflow: hidden;
+  color: transparent;
+}
+.bw, .about {
+  position:absolute;
+  right: 0;
+  z-index: 1050;
+  color: black;
+  padding-right: 10px;
+  transition:0.3s;
+}
+.bw {
+  top:0;
+}
+.about {
+  font-size: 32px;
+  font-style: normal;
+  letter-spacing: -0.02em;
+  padding-right: 6px;
+  top: 50px;
+}
+
+.logo:hover {
+    border-bottom: 6px solid red;
+    cursor:pointer;
+}
+.logo:hover .bw {
+  top: -50px;
+}
+.logo:hover .about {
+  top: 0px;
+}
+.battery {
+  top: 0;
+  left: 0;
+  background-color: black;
+}
+.battery .percentage {
+  font: lighter 16px/60px helvetica, arial, sans-serif;
+  color: white;
+  padding: 0px 16px;
+}
+.battery .svgBox {
+  font: lighter 16px/60px helvetica, arial, sans-serif;
+  color: white;
+  padding: 0px 16px;
+}
+
+.colorMode {
+  top: 0;
+  left: 33vw;
+}
+.colorMode>div {
+    display: none;
+    float: left;
+}
+
+.colorMode a {
+  margin-top: 14px;
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid black;
+  margin-right: -2px;
+}
+.darkgrey {
+  background-color: #2e2e2e;
+}
+.white {
+  background-color: #E2E2E2;
+}
+.red {
+  background-color: red;
+}
+.lime {
+  background-color: lime;
+}
+.blue {
+  background-color: blue;
+}
+.request {
+  font: 20px/30px helvetica, arial, sans-serif;
+  bottom: 0;
+  right:0;
+  padding: 3px 12px 0 18px;
+  background-color: darkgray;
+  border-top-left-radius: 18px;
+}
+.request a:hover{
+  color: white;
+}
+.location {
+  bottom: 0;
+  left: 33vw;
+  padding-bottom: 25px;
+}
+.location a {
+  text-decoration: none;
+  color: black;
+}
+.location a .light {
+  text-decoration: none;
+  color: black;
+  width:12px;
+  height:12px;
+  display: inline-block;
+  background-color: lime;
+  border-radius: 50%;
+  margin-right: 12px;
+  border: 1px solid lighter;
+}
+.phone {
+  bottom: 30vh;
+  left:10vw;
+}
+.mail {
+  top: 50vh;
+  right:10vw;
+}
+
+.phone, .mail {
+    border: 2px solid blue;
+    color:blue;
+    width: auto;
+    height: auto;
+    padding: 30px;
+    border-radius: 50%;
+}
+.mail {
+    border-color: red;
+    color:red;
+}
+
+.phone.inverted {
+  background-color: blue;
+  color: white;
+}
+.mail.inverted {
+  background-color: red;
+  color: white;
+}
+.phone a, .mail a {
+  font: 35px/40px times, serif;
+  text-align:center;
+  display:block;
+}
+
+/*aside functions*/
+.requestDialog,
+.aboutDialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1500;
+  display: none;
+}
+.requestDialog form {
+  position: absolute;
+  left:50%;
+  top: 45%;
+  margin-left: -300px;
+  z-index: 2000;
+}
+.dialogBg,
+.aboutBg {
+  background-color: rgba(0,0,0,0.5);
+  width: 100vw;
+  height: 100vh;
+}
+
+input {
+    height: 50px;
+    width: 240px;
+    border: none;
+    margin: 0;
+    padding: 0px 12px;
+    float: left;
+}
+input.mailInput{
+  font: italic 30px/50px times, serif;
+  width: 360px;
+  letter-spacing: -0.01em;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  padding-left: 25px;
+}
+input.mailButton {
+  font: italic bold 40px/50px helvetica, arial, sans-serif;
+  background-color: lime;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  padding-right: 25px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+
+
+.on {
+  display: block !important;
+}

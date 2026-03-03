@@ -37,12 +37,13 @@ Every poster must work with just `name`, `editionNumber`, `date`, `time`, and `c
 
 Each poster component:
 
-- Accepts a `speaker` prop (see interface above)
-- Is a single Svelte file, fully self-contained
+- Implements the `PosterFactory` signature: `(container, speaker, config?) => Cleanup`
+- Is a self-contained TypeScript module with co-located CSS and Storybook story
 - Owns its animation logic, color palette, and timing
-- Renders as a full-viewport experience
-- Runs animations client-side only (no SSR)
-- Has a corresponding Storybook story with controls for the speaker data
+- Renders as a full-viewport experience (100vw × 100vh)
+- Uses scoped DOM queries (`container.querySelector`, never `document`)
+- Uses `IntervalManager` for animation lifecycle and cleanup
+- Has a corresponding Storybook story with speaker selector and config controls
 - Works with any speaker — not hardcoded to one
 
 ## Visual Styles
@@ -71,16 +72,37 @@ Each poster has a story that:
 
 Adding a new poster style means:
 
-1. One new Svelte component in `src/lib/components/poster/`
-2. One new story file alongside it
-3. No changes to data, routing, or infrastructure
+1. Create `src/posters/my-poster/my-poster.ts` — export a `PosterFactory`
+2. Create `src/posters/my-poster/my-poster.css` — BEM-scoped styles
+3. Create `src/posters/my-poster/my-poster.stories.ts` — Storybook story
+4. Add export to `src/index.ts`
+5. No changes to data, routing, or infrastructure
 
 The poster receives data — it does not fetch, transform, or depend on anything outside its own file and the shared utilities.
 
 ## Technical Target
 
-- Svelte 5 with modern runes syntax
-- Storybook with Controls and Args
-- Tailwind CSS for base styling
+- TypeScript — no framework, imperative DOM manipulation
+- Storybook 8+ HTML (`@storybook/html-vite`) — only display layer
+- Vite 6 — bundler
+- Vanilla CSS (BEM) — `.poster-name__element--modifier`
 - Clean separation: data layer knows nothing about presentation, poster components know nothing about routing
 - Static site output
+- No Svelte, no Tailwind, no jQuery, no paper.js
+
+## Backlog — Missing Posters
+
+The following speakers still need unique poster designs. They currently only exist as reference images in the source material — no original animation code was written for them.
+
+| Speaker | Edition | Source Material | Notes |
+|---|---|---|---|
+| Prem Krishnamurthy | #6 | Images only | Currently uses letter-grid variant as placeholder |
+| Jan Middendorp | #8 | Template stub | No original design existed |
+| Stephanie Wunderlich | #9 | Images only | Currently uses letter-scatter variant as placeholder |
+| Franziska Morlok | #10 | Template stub | No original design existed |
+
+### Completed but needs porting
+
+| Speaker | Edition | Source Material | Notes |
+|---|---|---|---|
+| Michael Spranger | #12 | Full standalone HTML/CSS/JS project | `jitsi-bitsi-spider-source-material/jitsi-bitsi-michael-spranger/` — uses jQuery, needs rewrite to vanilla TS |
