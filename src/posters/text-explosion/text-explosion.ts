@@ -22,13 +22,15 @@ export function createTextExplosion(
   content.classList.add('text-explosion__content');
   container.appendChild(content);
 
+  // Split speaker data into individual words
   const strings = speakerToStrings(speaker);
+  const words = strings.flatMap((s) => s.split(/\s+/)).filter(Boolean);
 
   // Static fallback for reduced motion
   if (prefersReducedMotion() && config?.reduceMotion !== false) {
-    strings.forEach((str) => {
+    words.forEach((word) => {
       const el = document.createElement('div');
-      el.textContent = str;
+      el.innerHTML = wrapInRandomElement(word, HTML_TAGS);
       content.appendChild(el);
     });
     return () => manager.cleanup();
@@ -37,11 +39,11 @@ export function createTextExplosion(
   let counter = 0;
 
   manager.addInterval(() => {
-    const wrapped = wrapInRandomElement(strings[counter], HTML_TAGS);
+    const word = words[counter % words.length];
     const child = document.createElement('div');
-    child.innerHTML = wrapped;
+    child.innerHTML = wrapInRandomElement(word, HTML_TAGS);
     content.insertBefore(child, content.firstChild);
-    counter = (counter + 1) % strings.length;
+    counter++;
   }, ms);
 
   manager.watchForRemoval(container);

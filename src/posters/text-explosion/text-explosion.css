@@ -9,8 +9,7 @@
 }
 
 .text-explosion__content {
-  display: flex;
-  flex-flow: row wrap;
+  display: block;
   height: 100%;
   overflow-y: scroll;
   letter-spacing: 0.02em;
