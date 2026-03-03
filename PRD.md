@@ -106,3 +106,25 @@ The following speakers still need unique poster designs. They currently only exi
 | Speaker | Edition | Source Material | Notes |
 |---|---|---|---|
 | Michael Spranger | #12 | Full standalone HTML/CSS/JS project | `jitsi-bitsi-spider-source-material/jitsi-bitsi-michael-spranger/` — uses jQuery, needs rewrite to vanilla TS |
+
+## Backlog — Info Backside
+
+Every poster should have an **info backside** that reveals speaker details via a CSS 3D card-flip animation. Triggered by clicking a small info button (not a bare click on the poster, since posters may use click/touch for their own interactions).
+
+### Backside content
+
+- Speaker name
+- Edition number + formatted date
+- Caption (de or en)
+- Speaker image (if available)
+- Bio text (if available)
+- Link to event (if available)
+
+### Implementation notes
+
+- Use CSS `transform-style: preserve-3d` with `rotateY(180deg)` for the flip
+- Info button: small `(i)` icon, positioned at a poster corner, `z-index` above the poster content
+- The flip container wraps both the poster front and info back
+- Clicking the info button toggles a `.poster--flipped` class
+- Clicking the info button again (or a close button on the back) flips back
+- Must not interfere with poster-specific mouse/touch interactions
