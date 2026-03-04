@@ -1,5 +1,5 @@
-import type { PosterContext } from '../../utilities/poster-scaffold';
-import { definePoster } from '../../utilities/poster-scaffold';
+import { composePoster } from '../../layers/compose';
+import { extract } from '../../layers/content';
 import { getRandomItem } from '../../utilities/random';
 import './static-typography.css';
 
@@ -21,15 +21,22 @@ function decomposeForLayout(text: string): string[][] {
   return rows;
 }
 
-export const createStaticTypography = definePoster({
+export const createStaticTypography = composePoster({
   name: 'static-typography',
 
-  build({ container, speaker }: PosterContext) {
+  content(speaker) {
+    // Extract caption (or name fallback) as a whole token — render decomposes into rows
+    const caption = extract(speaker, ['caption']);
+    if (caption.length > 0) return caption;
+    return extract(speaker, ['name']);
+  },
+
+  render(container, tokens) {
     const canvas = document.createElement('div');
     canvas.classList.add('static-typography__canvas');
     container.appendChild(canvas);
 
-    const sourceText = speaker.caption.de || speaker.caption.en || speaker.name;
+    const sourceText = tokens[0]?.text ?? '';
     const rows = decomposeForLayout(sourceText);
 
     rows.forEach((row) => {
@@ -49,9 +56,5 @@ export const createStaticTypography = definePoster({
 
       canvas.appendChild(rowEl);
     });
-  },
-
-  animate() {
-    // No animation — purely static poster
   },
 });

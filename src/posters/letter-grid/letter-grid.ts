@@ -1,6 +1,6 @@
-import type { PosterContext } from '../../utilities/poster-scaffold';
-import { definePoster } from '../../utilities/poster-scaffold';
-import { stringToLettersArray } from '../../utilities/text-transforms';
+import { composePoster } from '../../layers/compose';
+import { extract, tokenize } from '../../layers/content';
+import { createElements, layout } from '../../layers/layout';
 import { changeFlex, changeFontSize, changeClass, changeBorderRadius } from '../../utilities/style-mutations';
 import { cssGradients } from '../../utilities/gradients';
 import { PALETTES } from '../../utilities/color-palettes';
@@ -11,10 +11,14 @@ const DEFAULT_BORDER_RADIUS = ['25cqw', '25cqw', '25cqw', '100cqw', '50px', '10c
 const DEFAULT_FAST_INTERVAL = 1000;
 const DEFAULT_SLOW_INTERVAL = 8000;
 
-export const createLetterGrid = definePoster({
+export const createLetterGrid = composePoster({
   name: 'letter-grid',
 
-  build({ container, speaker, config }: PosterContext) {
+  content(speaker) {
+    return tokenize(extract(speaker, ['name']), 'letter');
+  },
+
+  render(container, tokens, config) {
     const canvas = document.createElement('div');
     canvas.classList.add('letter-grid__canvas');
     if (config.animatedBackground) {
@@ -25,25 +29,14 @@ export const createLetterGrid = definePoster({
     }
     container.appendChild(canvas);
 
-    const chunkSize = config.counts?.chunkSize ?? Math.ceil(speaker.name.replace(/\s/g, '').length / 3);
-    const letters = stringToLettersArray(speaker.name, chunkSize);
+    const columns = config.counts?.chunkSize ?? Math.ceil(tokens.length / 3);
+    const elements = createElements(tokens, 'div', 'letter-grid__letter');
+    elements.forEach((el) => el.classList.add('letter-grid__letter--black'));
 
-    letters.forEach((row) => {
-      const rowEl = document.createElement('div');
-      rowEl.classList.add('letter-grid__row');
-
-      row.forEach((letter) => {
-        const letterEl = document.createElement('div');
-        letterEl.classList.add('letter-grid__letter', 'letter-grid__letter--black');
-        letterEl.textContent = letter;
-        rowEl.appendChild(letterEl);
-      });
-
-      canvas.appendChild(rowEl);
-    });
+    layout(canvas, elements, 'flex-grid', { columns, rowClass: 'letter-grid__row' });
   },
 
-  animate({ container, config }: PosterContext, manager) {
+  animate(container, _tokens, manager, config) {
     const speed = config.speed ?? 1;
     const fastInterval = config.intervals?.fast ?? DEFAULT_FAST_INTERVAL;
     const slowInterval = config.intervals?.slow ?? DEFAULT_SLOW_INTERVAL;

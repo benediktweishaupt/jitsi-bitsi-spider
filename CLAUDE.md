@@ -25,7 +25,13 @@ npm run typecheck        # TypeScript type checking
 ```
 src/
 ├── types/
-│   └── speaker.ts              # Speaker, PosterConfig, Cleanup, PosterFactory
+│   ├── speaker.ts              # Speaker, PosterConfig, Cleanup, PosterFactory
+│   └── layers.ts               # Token, PosterRecipe (three-layer interfaces)
+├── layers/
+│   ├── compose.ts              # composePoster() — wires content/render/animate lifecycle
+│   ├── content.ts              # Layer 1: extract(), tokenize(), sequence()
+│   ├── layout.ts               # Layer 2: createElements(), layout()
+│   └── behavior.ts             # Layer 3: drive(), applyToElements()
 ├── data/
 │   ├── speakers.ts             # All 13 speakers (typed)
 │   └── tags.ts                 # HTML tags array for TextExplosion
@@ -38,7 +44,8 @@ src/
 │   ├── text-transforms.ts      # stringToLettersArray, wrapInRandomElement, speakerToStrings
 │   ├── color-palettes.ts       # Named color collections (PALETTES)
 │   ├── font-stacks.ts          # Named font collections (FONTS)
-│   └── physics.ts              # Vec2 math + Blob class (replaces paper.js)
+│   ├── physics.ts              # Vec2 math + Blob class (replaces paper.js)
+│   └── poster-scaffold.ts      # Legacy definePoster (PhysicsBlobs only)
 ├── css/
 │   ├── reset.css               # Meyer reset
 │   └── base.css                # Shared .poster styles
@@ -52,9 +59,40 @@ src/
 │   ├── physics-blobs/          # #11 Emily Smith — canvas blob physics
 │   ├── static-typography/      # #13 Wenzel & Schwärzler — CSS-only layout
 │   └── scroll-carousel/        # #12 Michael Spranger — scroll-driven zoom carousel
+├── stories/
+│   ├── Gallery.stories.ts      # Overview grid of all 9 patterns
+│   └── Playground.stories.ts   # Interactive layer-mixing experimentation
 ├── assets/img/                 # Speaker images
 └── index.ts                    # Barrel export
 ```
+
+## Three-Layer Architecture
+
+Posters are decomposed into three composable layers connected by typed `Token[]`:
+
+```text
+Speaker → [Layer 1: Content] → Token[] → [Layer 2: Render] → DOM → [Layer 3: Animate] → Motion
+```
+
+**Layer 1 — Content** (`src/layers/content.ts`):
+
+- `extract(speaker, fields)` — extract speaker fields into tokens
+- `tokenize(tokens, strategy)` — split tokens by letter/word/chunk
+- `sequence(tokens, mode)` — repeat, shuffle, or alternate token arrays
+
+**Layer 2 — Layout** (`src/layers/layout.ts`):
+
+- `createElements(tokens, tag, classPrefix)` — DOM elements with `data-token-type`
+- `layout(container, elements, strategy)` — flow, flex-grid, absolute-random, fullscreen-stack, z-stack
+
+**Layer 3 — Behavior** (`src/layers/behavior.ts`):
+
+- `drive(manager, target, driver, effect)` — connect timer/mouse/scroll to mutations
+- `applyToElements(container, selector, effect)` — emit, reveal, cycle, reposition
+
+**composePoster(recipe)** wires the lifecycle: content → render → animate, with IntervalManager cleanup.
+
+PhysicsBlobs stays on the legacy `definePoster` (canvas-based, doesn't fit the DOM token model).
 
 ## Speaker Data Schema
 
@@ -103,7 +141,7 @@ Style mutations, gradients, text transforms, color palettes, and font stacks are
 
 ## Adding a New Poster
 
-1. Create `src/posters/my-poster/my-poster.ts` — export a `PosterFactory`
+1. Create `src/posters/my-poster/my-poster.ts` — use `composePoster({ content, render, animate })`
 2. Create `src/posters/my-poster/my-poster.css` — BEM-scoped styles
 3. Create `src/posters/my-poster/my-poster.stories.ts` — Storybook story
 4. Add export to `src/index.ts`

@@ -37,6 +37,18 @@ Every poster should have an **info backside** that reveals speaker details via a
 
 ## Changelog
 
+### 2026-03-04 — Three-layer composable architecture
+
+- **New architecture: Content / Render / Animate** — posters decomposed into three composable layers connected by typed `Token[]`. Inspired by Spotify's Base/Style/Animation component pattern.
+- **`composePoster(recipe)`** replaces `definePoster()` for 8 of 9 posters. Same lifecycle (IntervalManager, reduced-motion, DOM removal watch) but with explicit content/render/animate split. PhysicsBlobs stays on legacy `definePoster` (canvas-based).
+- **Layer 1 — Content primitives** (`src/layers/content.ts`): `extract(speaker, fields)`, `tokenize(tokens, strategy)`, `sequence(tokens, mode)`. One function per concern, strategy via argument.
+- **Layer 2 — Layout primitives** (`src/layers/layout.ts`): `createElements(tokens, tag, classPrefix)` with `data-token-type` attribute for CSS targeting, `layout(container, elements, strategy)` supporting flow, flex-grid, absolute-random, fullscreen-stack, z-stack.
+- **Layer 3 — Behavior primitives** (`src/layers/behavior.ts`): `drive(manager, target, driver, effect)` connecting timer/mouse/scroll drivers to mutation effects, `applyToElements()` for common operations (emit, reveal, cycle, reposition).
+- **Token interface** (`src/types/layers.ts`): `{ text: string; type: string }` — semantic types (name, caption, date, bio, meta, image, link, keyword, symbol) enable per-type styling via `[data-token-type]` CSS selectors.
+- **All 8 DOM-based posters refactored**: TextExplosion, WordReveal, LetterGrid, LetterChase, ScreenFlicker, LetterScatter, ScrollCarousel, StaticTypography — each now uses `composePoster` with layer primitives where natural, custom code where needed.
+- **Playground story** (`src/stories/Playground.stories.ts`): interactive Storybook story for composing arbitrary posters by mixing content fields, tokenization strategies, layout modes, color palettes, and behavior drivers. Presets for LetterGrid-style, TextExplosion-style, scattered letters, flicker stack.
+- **Barrel exports updated** (`src/index.ts`): Token, PosterRecipe, composePoster, all layer primitives exported.
+
 ### 2026-03-03 — ScrollCarousel poster (#12 Michael Spranger)
 
 - **New poster pattern: `scroll-carousel`** — ported from jQuery source to vanilla TypeScript using `definePoster()`. Scroll/swipe-driven layer rotation with CSS scale transitions (before: 0.5, active: 1, after: 2). Content blocks (name, keywords, date, bio, image) randomly positioned within layers.

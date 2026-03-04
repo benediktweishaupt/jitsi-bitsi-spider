@@ -1,5 +1,5 @@
-import type { PosterContext } from '../../utilities/poster-scaffold';
-import { definePoster } from '../../utilities/poster-scaffold';
+import { composePoster } from '../../layers/compose';
+import { extract, tokenize } from '../../layers/content';
 import { getRandomInt, getRandomItem } from '../../utilities/random';
 import { changeFontSize } from '../../utilities/style-mutations';
 import { PALETTES } from '../../utilities/color-palettes';
@@ -8,14 +8,14 @@ import './letter-scatter.css';
 const DEFAULT_SCATTER_INTERVAL = 1361;
 const DEFAULT_BG_COLOR_INTERVAL = 8000;
 
-function getNameChars(speaker: PosterContext['speaker']): string[] {
-  return speaker.name.replace(/\s/g, '').split('');
-}
-
-export const createLetterScatter = definePoster({
+export const createLetterScatter = composePoster({
   name: 'letter-scatter',
 
-  build({ container, speaker, config }: PosterContext) {
+  content(speaker) {
+    return tokenize(extract(speaker, ['name']), 'letter');
+  },
+
+  render(container, tokens, config) {
     container.style.position = 'relative';
 
     const canvas = document.createElement('div');
@@ -33,25 +33,23 @@ export const createLetterScatter = definePoster({
     data.classList.add('letter-scatter__data');
     container.appendChild(data);
 
-    const nameChars = getNameChars(speaker);
-
+    // Dual-layer: same letters in both foreground and background
     [canvas, bg].forEach((layer) => {
-      nameChars.forEach((char, i) => {
+      tokens.forEach((token, i) => {
         const el = document.createElement('div');
         el.classList.add('letter-scatter__letter');
         if (config.colorBurn) {
           el.classList.add('letter-scatter__letter--color-burn');
         }
         el.id = `${layer === canvas ? 'fg' : 'bg'}-letter-${i}`;
-        el.textContent = char;
+        el.textContent = token.text;
         layer.appendChild(el);
       });
     });
   },
 
-  staticFallback({ container, speaker }: PosterContext) {
-    const nameChars = getNameChars(speaker);
-    nameChars.forEach((_, i) => {
+  staticFallback(container, tokens) {
+    tokens.forEach((_, i) => {
       const x = getRandomInt(10, 80);
       const y = getRandomInt(10, 80);
       ['fg', 'bg'].forEach((prefix) => {
@@ -64,7 +62,7 @@ export const createLetterScatter = definePoster({
     });
   },
 
-  animate({ container, speaker, config }: PosterContext, manager) {
+  animate(container, tokens, manager, config) {
     const speed = config.speed ?? 1;
     const scatterInterval = config.intervals?.scatter ?? DEFAULT_SCATTER_INTERVAL;
     const bgColorInterval = config.intervals?.bgColor ?? DEFAULT_BG_COLOR_INTERVAL;
@@ -72,12 +70,11 @@ export const createLetterScatter = definePoster({
     const [fontMin, fontMax] = config.ranges?.fontSize ?? [10, 40];
     const canvas = container.querySelector('.letter-scatter__canvas') as HTMLElement;
     const bg = container.querySelector('.letter-scatter__background') as HTMLElement;
-    const nameChars = getNameChars(speaker);
 
     let letterCount = 0;
 
     manager.addInterval(() => {
-      const idx = letterCount % nameChars.length;
+      const idx = letterCount % tokens.length;
       const x = getRandomInt(60, container.clientWidth - 60);
       const y = getRandomInt(60, container.clientHeight - 60);
 

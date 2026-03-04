@@ -1,7 +1,7 @@
-import type { PosterContext } from '../../utilities/poster-scaffold';
-import { definePoster } from '../../utilities/poster-scaffold';
+import type { Token } from '../../types/layers';
+import { composePoster } from '../../layers/compose';
+import { extract, tokenize, sequence } from '../../layers/content';
 import { getRandomInt } from '../../utilities/random';
-import { formatDateAndTime } from '../../utilities/text-transforms';
 import './scroll-carousel.css';
 
 const DEFAULT_REPOSITION_INTERVAL = 10000;
@@ -12,57 +12,6 @@ const CLS_BEFORE = 'scroll-carousel__layer--before';
 const CLS_ACTIVE = 'scroll-carousel__layer--active';
 const CLS_AFTER = 'scroll-carousel__layer--after';
 const STATE_CLASSES = [CLS_BEFORE, CLS_ACTIVE, CLS_AFTER] as const;
-
-/** Build content blocks from speaker data */
-function buildContentPool(ctx: PosterContext): HTMLElement[] {
-  const { speaker } = ctx;
-  const nameParts = speaker.name.split(/\s+/);
-  const { formattedDate, formattedTime } = formatDateAndTime(speaker.date, speaker.time);
-  const caption = speaker.caption.de || speaker.caption.en;
-  const bio = speaker.bio?.de?.text || speaker.bio?.en?.text || '';
-  const keywords = ['jitsi', 'bitsi', 'spider', `#${speaker.editionNumber}`, ...caption.split(/\s+/).slice(0, 6)];
-
-  const blocks: HTMLElement[] = [];
-
-  const makeBlock = (cls: string, content: string): HTMLElement => {
-    const el = document.createElement('div');
-    el.classList.add('scroll-carousel__block', cls);
-    el.textContent = content;
-    return el;
-  };
-
-  // Name blocks (repeated for density)
-  for (let i = 0; i < 3; i++) {
-    nameParts.forEach((part) => blocks.push(makeBlock('scroll-carousel__block--name', part)));
-  }
-
-  // Keyword blocks
-  keywords.forEach((kw) => blocks.push(makeBlock('scroll-carousel__block--keyword', kw)));
-
-  // Date blocks
-  if (formattedDate) {
-    blocks.push(makeBlock('scroll-carousel__block--date', `${formattedDate} ${formattedTime}`));
-    blocks.push(makeBlock('scroll-carousel__block--date', formattedDate));
-  }
-
-  // Bio blocks (split into chunks)
-  if (bio) {
-    const words = bio.split(/\s+/);
-    for (let i = 0; i < words.length; i += 12) {
-      blocks.push(makeBlock('scroll-carousel__block--bio', words.slice(i, i + 12).join(' ')));
-    }
-  }
-
-  // Image block
-  if (speaker.image) {
-    const img = document.createElement('div');
-    img.classList.add('scroll-carousel__block', 'scroll-carousel__block--image');
-    img.style.backgroundImage = `url(${speaker.image})`;
-    blocks.push(img);
-  }
-
-  return blocks;
-}
 
 /** Position a block randomly within container bounds */
 function positionBlock(block: HTMLElement, w: number, h: number): void {
@@ -86,52 +35,85 @@ function debounce(fn: (e: Event) => void, ms: number): (e: Event) => void {
   };
 }
 
-export const createScrollCarousel = definePoster({
+export const createScrollCarousel = composePoster({
   name: 'scroll-carousel',
 
-  build({ container, speaker, config }: PosterContext) {
+  content(speaker) {
+    // Name words repeated 3x for density
+    const name = sequence(tokenize(extract(speaker, ['name']), 'word'), 'repeat', { times: 3 });
+
+    // Keywords: series meta + caption words
+    const caption = speaker.caption.de || speaker.caption.en;
+    const kwTexts = ['jitsi', 'bitsi', 'spider', `#${speaker.editionNumber}`, ...caption.split(/\s+/).slice(0, 6)];
+    const keywords: Token[] = kwTexts.map((kw) => ({ text: kw, type: 'keyword' }));
+
+    // Date
+    const date = extract(speaker, ['date']);
+
+    // Bio chunked into ~12-word blocks
+    const bioToken = extract(speaker, ['bio']);
+    const bioChunks: Token[] = [];
+    if (bioToken.length > 0) {
+      const words = bioToken[0].text.split(/\s+/);
+      for (let i = 0; i < words.length; i += 12) {
+        bioChunks.push({ text: words.slice(i, i + 12).join(' '), type: 'bio' });
+      }
+    }
+
+    // Image
+    const image = extract(speaker, ['image']);
+
+    return [...name, ...keywords, ...date, ...bioChunks, ...image];
+  },
+
+  render(container, tokens, config) {
     const stage = document.createElement('div');
     stage.classList.add('scroll-carousel__stage');
     container.appendChild(stage);
 
-    const ctx: PosterContext = { container, speaker, config };
-    const pool = buildContentPool(ctx);
+    // Create DOM pool from tokens
+    const pool: HTMLElement[] = tokens.map((token) => {
+      const el = document.createElement('div');
+      el.classList.add('scroll-carousel__block', `scroll-carousel__block--${token.type}`);
+      if (token.type === 'image') {
+        el.style.backgroundImage = `url(${token.text})`;
+      } else {
+        el.textContent = token.text;
+      }
+      return el;
+    });
+
     const blocksPerLayer = config.counts?.blocksPerLayer ?? DEFAULT_BLOCKS_PER_LAYER;
 
-    // Create layers with randomly assigned blocks
     for (let i = 0; i < LAYER_COUNT; i++) {
       const layer = document.createElement('div');
       layer.classList.add('scroll-carousel__layer');
       layer.dataset.layerIndex = String(i);
 
-      // Assign state classes to first 3 layers
       if (i === 0) layer.classList.add(CLS_BEFORE);
       if (i === 1) layer.classList.add(CLS_ACTIVE);
       if (i === 2) layer.classList.add(CLS_AFTER);
 
-      // Add random blocks from pool
       for (let j = 0; j < blocksPerLayer; j++) {
         const src = pool[getRandomInt(0, pool.length - 1)];
-        const block = src.cloneNode(true) as HTMLElement;
-        layer.appendChild(block);
+        layer.appendChild(src.cloneNode(true) as HTMLElement);
       }
 
       stage.appendChild(layer);
     }
   },
 
-  staticFallback({ container }: PosterContext) {
-    // Show the active layer with positioned blocks
+  staticFallback(container) {
     const stage = container.querySelector('.scroll-carousel__stage')!;
-    const w = (container as HTMLElement).clientWidth || 800;
-    const h = (container as HTMLElement).clientHeight || 800;
+    const w = container.clientWidth || 800;
+    const h = container.clientHeight || 800;
 
     stage.querySelectorAll('.scroll-carousel__block').forEach((block) => {
       positionBlock(block as HTMLElement, w, h);
     });
   },
 
-  animate({ container, config }: PosterContext, manager) {
+  animate(container, _tokens, manager, config) {
     const speed = config.speed ?? 1;
     const repositionInterval = config.intervals?.reposition ?? DEFAULT_REPOSITION_INTERVAL;
     const stage = container.querySelector('.scroll-carousel__stage') as HTMLElement;

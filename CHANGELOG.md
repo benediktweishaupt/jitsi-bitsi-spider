@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.0] - 2026-03-04
+
+### Added
+
+- Three-layer composable architecture: Content / Render / Animate
+- `composePoster()` scaffold replacing `definePoster()` for 8 of 9 posters
+- Layer 1 primitives: `extract()`, `tokenize()`, `sequence()` in `src/layers/content.ts`
+- Layer 2 primitives: `createElements()`, `layout()` in `src/layers/layout.ts`
+- Layer 3 primitives: `drive()`, `applyToElements()` in `src/layers/behavior.ts`
+- `Token` and `PosterRecipe` interfaces in `src/types/layers.ts`
+- Playground story for interactive layer-mixing experimentation
+
+### Changed
+
+- All 8 DOM-based posters refactored to `composePoster` with typed tokens
+- Barrel exports updated with layer primitives
+- CLAUDE.md updated with three-layer architecture documentation
+
 ## [0.2.0] - 2026-03-03
 
 ### Fixed

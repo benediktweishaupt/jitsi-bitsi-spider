@@ -1,9 +1,16 @@
 // Types
 export type { Speaker, PosterConfig, Cleanup, PosterFactory } from './types/speaker';
+export type { Token, PosterRecipe } from './types/layers';
 
 // Data
 export { speakers } from './data/speakers';
 export { HTML_TAGS } from './data/tags';
+
+// Three-layer architecture
+export { composePoster } from './layers/compose';
+export { extract, tokenize, sequence } from './layers/content';
+export { createElements, layout } from './layers/layout';
+export { drive, applyToElements } from './layers/behavior';
 
 // Poster factories
 export { createTextExplosion } from './posters/text-explosion/text-explosion';
@@ -16,7 +23,7 @@ export { createPhysicsBlobs } from './posters/physics-blobs/physics-blobs';
 export { createStaticTypography } from './posters/static-typography/static-typography';
 export { createScrollCarousel } from './posters/scroll-carousel/scroll-carousel';
 
-// Scaffold
+// Scaffold (legacy — PhysicsBlobs only)
 export { definePoster } from './utilities/poster-scaffold';
 export type { PosterDefinition, PosterContext } from './utilities/poster-scaffold';
 

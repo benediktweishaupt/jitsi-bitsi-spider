@@ -1,5 +1,6 @@
-import type { PosterContext } from '../../utilities/poster-scaffold';
-import { definePoster } from '../../utilities/poster-scaffold';
+import type { Token } from '../../types/layers';
+import { composePoster } from '../../layers/compose';
+import { extract, tokenize } from '../../layers/content';
 import { changeFontColorCss } from '../../utilities/style-mutations';
 import { cssIDGradient } from '../../utilities/gradients';
 import { PALETTES } from '../../utilities/color-palettes';
@@ -7,33 +8,36 @@ import './letter-chase.css';
 
 const DEFAULT_MOVE_INTERVAL = 1500;
 const DEFAULT_BG_INTERVAL = 4000;
-const SYMBOLS = ['■', '●', '▲'];
+const SYMBOLS: Token[] = [
+  { text: '■', type: 'symbol' },
+  { text: '●', type: 'symbol' },
+  { text: '▲', type: 'symbol' },
+];
 
-function getAllChars(speaker: PosterContext['speaker']): string[] {
-  const nameChars = speaker.name.replace(/\s/g, '').split('');
-  return [...nameChars, ...SYMBOLS];
-}
-
-export const createLetterChase = definePoster({
+export const createLetterChase = composePoster({
   name: 'letter-chase',
 
-  build({ container, speaker }: PosterContext) {
+  content(speaker) {
+    return [...tokenize(extract(speaker, ['name']), 'letter'), ...SYMBOLS];
+  },
+
+  render(container, tokens) {
     const canvas = document.createElement('div');
     canvas.classList.add('letter-chase__canvas');
     container.appendChild(canvas);
 
-    getAllChars(speaker).forEach((char, i) => {
+    tokens.forEach((token, i) => {
       const el = document.createElement('div');
       el.classList.add('letter-chase__letter');
       el.id = `letter-${String(i).padStart(2, '0')}`;
-      el.textContent = char;
+      el.textContent = token.text;
       canvas.appendChild(el);
     });
   },
 
-  staticFallback({ container, speaker }: PosterContext) {
+  staticFallback(container, tokens) {
     const canvas = container.querySelector('.letter-chase__canvas')!;
-    getAllChars(speaker).forEach((_, i) => {
+    tokens.forEach((_, i) => {
       const el = canvas.querySelector(`#letter-${String(i).padStart(2, '0')}`) as HTMLElement;
       if (el) {
         el.style.opacity = '1';
@@ -43,13 +47,12 @@ export const createLetterChase = definePoster({
     });
   },
 
-  animate({ container, speaker, config }: PosterContext, manager) {
+  animate(container, tokens, manager, config) {
     const speed = config.speed ?? 1;
     const moveInterval = config.intervals?.move ?? DEFAULT_MOVE_INTERVAL;
     const bgInterval = config.intervals?.background ?? DEFAULT_BG_INTERVAL;
     const colors = config.colors ?? [...PALETTES.primary];
     const canvas = container.querySelector('.letter-chase__canvas') as HTMLElement;
-    const allChars = getAllChars(speaker);
 
     let letterCount = 0;
 
@@ -76,7 +79,7 @@ export const createLetterChase = definePoster({
     manager.addListener(canvas, 'touchmove', moveHandler as EventListener, { passive: true });
 
     manager.addInterval(() => {
-      letterCount = (letterCount + 1) % allChars.length;
+      letterCount = (letterCount + 1) % tokens.length;
     }, moveInterval / speed);
 
     manager.addInterval(() => {
