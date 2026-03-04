@@ -28,6 +28,7 @@ const POSTERS: { name: string; storyId: string }[] = [
   { name: 'letter-scatter', storyId: 'posters-letterscatter--contrast-style' },
   { name: 'physics-blobs', storyId: 'posters-physicsblobs--default' },
   { name: 'static-typography', storyId: 'posters-statictypography--default' },
+  { name: 'scroll-carousel', storyId: 'posters-scrollcarousel--default' },
 ];
 
 const MIME: Record<string, string> = {

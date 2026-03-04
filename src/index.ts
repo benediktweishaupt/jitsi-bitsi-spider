@@ -14,6 +14,7 @@ export { createScreenFlicker } from './posters/screen-flicker/screen-flicker';
 export { createLetterScatter } from './posters/letter-scatter/letter-scatter';
 export { createPhysicsBlobs } from './posters/physics-blobs/physics-blobs';
 export { createStaticTypography } from './posters/static-typography/static-typography';
+export { createScrollCarousel } from './posters/scroll-carousel/scroll-carousel';
 
 // Scaffold
 export { definePoster } from './utilities/poster-scaffold';

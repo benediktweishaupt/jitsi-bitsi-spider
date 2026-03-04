@@ -2,7 +2,7 @@
 
 ## Project
 
-Jitsi Bitsi Spider — generative poster toolkit for a lecture series (Kunsthochschule Weißensee, 2020). Each speaker gets an animated, interactive poster. Same data in, different visual output. 8 unique poster patterns, 13 speakers.
+Jitsi Bitsi Spider — generative poster toolkit for a lecture series (Kunsthochschule Weißensee, 2020). Each speaker gets an animated, interactive poster. Same data in, different visual output. 9 unique poster patterns, 13 speakers.
 
 ## Commands
 
@@ -50,7 +50,8 @@ src/
 │   ├── screen-flicker/         # #5 Stefan Marx — rapid screen cycling
 │   ├── letter-scatter/         # #7 Lukas + #9 Stephanie — large scattered letters
 │   ├── physics-blobs/          # #11 Emily Smith — canvas blob physics
-│   └── static-typography/      # #13 Wenzel & Schwärzler — CSS-only layout
+│   ├── static-typography/      # #13 Wenzel & Schwärzler — CSS-only layout
+│   └── scroll-carousel/        # #12 Michael Spranger — scroll-driven zoom carousel
 ├── assets/img/                 # Speaker images
 └── index.ts                    # Barrel export
 ```

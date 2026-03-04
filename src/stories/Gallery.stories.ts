@@ -10,6 +10,7 @@ import { createScreenFlicker } from '../posters/screen-flicker/screen-flicker';
 import { createLetterScatter } from '../posters/letter-scatter/letter-scatter';
 import { createPhysicsBlobs } from '../posters/physics-blobs/physics-blobs';
 import { createStaticTypography } from '../posters/static-typography/static-typography';
+import { createScrollCarousel } from '../posters/scroll-carousel/scroll-carousel';
 
 interface PosterEntry {
   label: string;
@@ -28,6 +29,7 @@ const POSTERS: PosterEntry[] = [
   { label: 'LetterScatter', description: 'Large scattered letterforms with optional blur and color burn', factory: createLetterScatter, speakerIndex: 6 },
   { label: 'PhysicsBlobs', description: 'Canvas-based blob physics with collision detection', factory: createPhysicsBlobs, speakerIndex: 10 },
   { label: 'StaticTypography', description: 'CSS-only typographic composition, no animation', factory: createStaticTypography, speakerIndex: 12 },
+  { label: 'ScrollCarousel', description: 'Scroll-driven zoom carousel with randomly positioned text blocks', factory: createScrollCarousel, speakerIndex: 11 },
 ];
 
 function createAboutSection(): HTMLElement {
@@ -42,7 +44,7 @@ function createAboutSection(): HTMLElement {
 
     <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 8px;">What is this?</h2>
     <p style="margin: 0 0 16px;">
-      A collection of 8 animated poster components. Each one takes structured speaker
+      A collection of animated poster components. Each one takes structured speaker
       data &mdash; a name, date, caption, optional image &mdash; and turns it into a
       full-screen typographic animation. Same data in, different visual output.
     </p>
@@ -103,7 +105,7 @@ function createPosterGrid(): { section: HTMLElement; cleanups: (() => void)[] } 
   section.style.cssText = 'max-width: 1400px; margin: 0 auto; padding: 0 8px 48px;';
 
   const heading = document.createElement('h2');
-  heading.textContent = 'The 8 patterns';
+  heading.textContent = 'The 9 patterns';
   heading.style.cssText = 'font: 600 16px/1 system-ui, sans-serif; color: #fff; margin: 0 0 16px; padding: 0 4px;';
   section.appendChild(heading);
 

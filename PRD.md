@@ -11,12 +11,6 @@ The following speakers still need unique poster designs. They currently only exi
 | Stephanie Wunderlich | #9 | Images only | Currently uses letter-scatter variant as placeholder |
 | Franziska Morlok | #10 | Template stub | No original design existed |
 
-### Completed but needs porting
-
-| Speaker | Edition | Source Material | Notes |
-| --- | --- | --- | --- |
-| Michael Spranger | #12 | Full standalone HTML/CSS/JS project | `jitsi-bitsi-spider-source-material/jitsi-bitsi-michael-spranger/` — uses jQuery, needs rewrite to vanilla TS |
-
 ## Backlog — Info Backside
 
 Every poster should have an **info backside** that reveals speaker details via a CSS 3D card-flip animation. Triggered by clicking a small info button (not a bare click on the poster, since posters may use click/touch for their own interactions).
@@ -43,15 +37,22 @@ Every poster should have an **info backside** that reveals speaker details via a
 
 ## Changelog
 
-### 2026-03-03 — DRY architecture + visual portfolio
+### 2026-03-03 — ScrollCarousel poster (#12 Michael Spranger)
 
-- **`definePoster()` scaffold** — extracted shared lifecycle (container setup, reduced-motion check, animation start, IntervalManager cleanup) into `src/utilities/poster-scaffold.ts`. All 8 posters refactored to use it.
-- **Configurable PosterConfig** — enriched with `intervals`, `counts`, `ranges` (named overrides with fallback defaults). Every hardcoded constant in all 8 posters is now configurable. Deleted ad-hoc `LetterGridConfig`/`LetterScatterConfig` interfaces.
+- **New poster pattern: `scroll-carousel`** — ported from jQuery source to vanilla TypeScript using `definePoster()`. Scroll/swipe-driven layer rotation with CSS scale transitions (before: 0.5, active: 1, after: 2). Content blocks (name, keywords, date, bio, image) randomly positioned within layers.
+- Storybook story with controls (speed, reposition interval, blocks per layer) and presets (Dense, Minimal).
+- Updated Gallery/About page, capture script, README, CLAUDE.md for 9 posters.
+
+### 2026-03-03 — DRY architecture, visual portfolio + deployment
+
+- **`definePoster()` scaffold** — extracted shared lifecycle (container setup, reduced-motion check, animation start, IntervalManager cleanup) into `src/utilities/poster-scaffold.ts`. All posters refactored to use it.
+- **Configurable PosterConfig** — enriched with `intervals`, `counts`, `ranges` (named overrides with fallback defaults). Every hardcoded constant in all posters is now configurable. Deleted ad-hoc `LetterGridConfig`/`LetterScatterConfig` interfaces.
 - **Content-adaptive defaults** — letter-grid chunk size defaults to `Math.ceil(nameLength / 3)` instead of fixed 5.
-- **Storybook controls** — all 8 stories expose relevant config as controls (interval sliders, count/range inputs, palette/font selectors). 2-3 preset story variants per poster.
-- **Gallery story** — `Overview/Gallery` renders all 8 posters in a 4x2 grid.
-- **Screenshot script** — Playwright captures each poster + gallery to `docs/screenshots/`.
+- **Storybook controls** — all stories expose relevant config as controls (interval sliders, count/range inputs, palette/font selectors). 2-3 preset story variants per poster.
+- **About page** — `Overview/About` with project intro (lecture series by Matthias Hubner at KH Weissensee, 2020) and all posters running live in a grid.
+- **Screenshot script** — Playwright captures each poster + about page to `docs/screenshots/`.
 - **README rewrite** — poster image gallery, usage example, correct stack info.
+- **GitHub Pages deployment** — repo transferred to `benediktweishaupt/jitsi-bitsi-spider` (public), GitHub Actions workflow auto-deploys Storybook on push to main.
 
 ### 2026-03-03 — Visual QA
 

@@ -1,7 +1,7 @@
 # Jitsi Bitsi Spider
 
 Generative poster system for animated typographic posters.
-Same speaker data in, different visual output. 8 poster patterns, 13 speakers.
+Same speaker data in, different visual output. 9 poster patterns, 13 speakers.
 
 ![Poster Gallery](docs/screenshots/gallery.png)
 
@@ -13,6 +13,8 @@ Same speaker data in, different visual output. 8 poster patterns, 13 speakers.
 | TextExplosion | WordReveal | LetterGrid | LetterChase |
 | ![ScreenFlicker](docs/screenshots/screen-flicker.png) | ![LetterScatter](docs/screenshots/letter-scatter.png) | ![PhysicsBlobs](docs/screenshots/physics-blobs.png) | ![StaticTypography](docs/screenshots/static-typography.png) |
 | ScreenFlicker | LetterScatter | PhysicsBlobs | StaticTypography |
+| ![ScrollCarousel](docs/screenshots/scroll-carousel.png) | | | |
+| ScrollCarousel | | | |
 
 ## How it works
 

@@ -177,9 +177,23 @@ export const speakers: Speaker[] = [
   {
     editionNumber: 12,
     name: 'Michael Spranger',
-    date: '',
-    time: '',
-    caption: { en: '', de: '' },
+    date: '2021-05-19',
+    time: '20:00:00+02:00',
+    image: 'img/michael-spranger/michael-spranger-img.jpg',
+    caption: {
+      en: 'Michael Spranger talks about his work, his research on AI and robotics, and the intersection of language and machines.',
+      de: 'Michael Spranger spricht über seine Arbeit, seine Forschung zu KI und Robotik, sowie die Schnittstelle von Sprache und Maschinen.',
+    },
+    bio: {
+      en: {
+        text: 'Michael Spranger is a researcher working on artificial intelligence, natural language understanding, and robotics. He explores how machines can learn to communicate and understand language through embodied interaction.',
+        link: '',
+      },
+      de: {
+        text: 'Michael Spranger ist ein Forscher, der an künstlicher Intelligenz, natürlichem Sprachverständnis und Robotik arbeitet. Er erforscht, wie Maschinen durch verkörperte Interaktion lernen können, Sprache zu kommunizieren und zu verstehen.',
+        link: '',
+      },
+    },
   },
   {
     editionNumber: 13,
